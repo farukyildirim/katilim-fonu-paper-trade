@@ -9,6 +9,7 @@ import time
 import os
 import json
 from pathlib import Path
+from supabase import create_client, Client
 
 # ============================================================
 # SAYFA AYARLARI
@@ -36,10 +37,24 @@ RISK_FREE_REEL = MACRO["tufe"]
 MC_SIMULATIONS = 1000
 MC_DAYS = 252
 
-DATA_DIR = Path("paper_trade_data")
-DATA_DIR.mkdir(exist_ok=True)
-STATE_FILE = DATA_DIR / "state.json"
+# ============================================================
+# SUPABASE
+# ============================================================
+@st.cache_resource
+def init_supabase() -> Client:
+    try:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
+        return create_client(url, key)
+    except Exception as e:
+        st.error(f"❌ Supabase bağlantı hatası: {e}")
+        return None
 
+supabase = init_supabase()
+
+# ============================================================
+# KIRMIZI BAYRAK EŞİKLERİ
+# ============================================================
 RED_FLAG_THRESHOLDS = {
     "max_drawdown_kritik": -0.20, "max_drawdown_uyari": -0.10,
     "volatilite_kritik": 0.25, "volatilite_uyari": 0.18,
@@ -49,6 +64,9 @@ RED_FLAG_THRESHOLDS = {
     "reel_getiri_kritik": -0.05, "sapma_carpani": 1.5,
 }
 
+# ============================================================
+# PORTFÖY ŞABLONLARI
+# ============================================================
 PORTFOLIO_TEMPLATES = {
     "🟢 Muhafazakar": {"ZPG": 0.35, "KTN": 0.25, "KZL": 0.20, "KPC": 0.10, "KIS": 0.10},
     "🟡 Dengeli": {"ZPG": 0.15, "KTN": 0.15, "CPU": 0.25, "KZL": 0.20, "KPC": 0.15, "KIS": 0.10},
@@ -59,6 +77,9 @@ PORTFOLIO_TEMPLATES = {
     "🛡️ Getiri Odaklı": {"ZPG": 0.30, "KTN": 0.25, "KZL": 0.20, "KIS": 0.15, "KPC": 0.10},
 }
 
+# ============================================================
+# VARSAYILAN FONLAR
+# ============================================================
 DEFAULT_FUNDS = {
     "KPC": {"name": "Kuveyt Türk Katılım Hisse Senedi", "type": "Hisse Senedi",
             "tax": 0.0, "vol": 0.38, "price": 20.967209, "r1y": 0.4171},
@@ -156,7 +177,6 @@ def search_tefas_fund(query: str):
         pass
     return pd.DataFrame(filtered, columns=["code", "title"])
 
-
 # ============================================================
 # FİYAT SİMÜLASYONU
 # ============================================================
@@ -181,9 +201,8 @@ def generate_price_history(funds_dict: dict, days: int = 365) -> pd.DataFrame:
         out[code] = path
     return pd.DataFrame(out).set_index("date")
 
-
 # ============================================================
-# KALICI DEPOLAMA
+# SUPABASE KAYIT / YÜKLEME
 # ============================================================
 def serialize_datetime(obj):
     if isinstance(obj, (datetime, pd.Timestamp)):
@@ -192,6 +211,11 @@ def serialize_datetime(obj):
 
 
 def save_state():
+    if supabase is None:
+        return False, "❌ Supabase bağlantısı yok"
+    user = st.session_state.get("user")
+    if user is None:
+        return False, "❌ Giriş yapılmadı"
     try:
         data = {
             "state_version": STATE_VERSION,
@@ -205,20 +229,30 @@ def save_state():
             "rebalance_log": st.session_state.rebalance_log,
             "saved_at": datetime.now().isoformat(),
         }
-        with open(STATE_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, default=serialize_datetime,
-                      ensure_ascii=False, indent=2)
+        json_str = json.dumps(data, default=serialize_datetime, ensure_ascii=False)
+        supabase.table("portfolios").upsert({
+            "user_id": user.id,
+            "state_data": json.loads(json_str),
+            "updated_at": datetime.now().isoformat(),
+        }, on_conflict="user_id").execute()
         return True, f"💾 Kaydedildi ({datetime.now().strftime('%H:%M:%S')})"
     except Exception as e:
         return False, f"❌ Kayıt hatası: {e}"
 
 
 def load_state():
-    if not STATE_FILE.exists():
-        return False, "Kayıt dosyası yok"
+    if supabase is None:
+        return False, "❌ Supabase bağlantısı yok"
+    user = st.session_state.get("user")
+    if user is None:
+        return False, "❌ Giriş yapılmadı"
     try:
-        with open(STATE_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        result = supabase.table("portfolios").select("state_data").eq(
+            "user_id", user.id
+        ).execute()
+        if not result.data:
+            return False, "🆕 İlk giriş — kayıt yok"
+        data = result.data[0]["state_data"]
         st.session_state.start_date = datetime.fromisoformat(data["start_date"])
         st.session_state.initial_capital = data["initial_capital"]
         st.session_state.funds = data["funds"]
@@ -240,8 +274,7 @@ def load_state():
         for code in st.session_state.funds.keys():
             w = st.session_state.target_weights.get(code, 0.0)
             st.session_state[f"w_{code}"] = int(round(w * 100))
-        saved_at = data.get("saved_at", "")
-        return True, f"✅ {len(tx)} işlem yüklendi ({saved_at[:16]})"
+        return True, f"✅ {len(tx)} işlem yüklendi"
     except Exception as e:
         return False, f"❌ Yükleme hatası: {e}"
 
@@ -256,36 +289,21 @@ def calculate_group_pnl(group_txs):
         entry_price = float(t.get("fiyat", 0))
         cost = float(t.get("tutar", 0))
         current_price = get_price(code, SIM_END_DATE) if code in st.session_state.funds else entry_price
-
-        # ✅ Floating-point temizliği
         value = round(units * current_price, 4)
         pnl = round(value - cost, 4)
         pnl_pct = round((value / cost - 1) * 100, 4) if cost > 0 else 0
-
         total_cost += cost
         current_value += value
-
         rows.append({
-            "Fon": code,
-            "Birim": round(units, 4),
-            "Giriş Fiyatı": round(entry_price, 4),
-            "Güncel Fiyat": round(current_price, 4),
-            "Maliyet": round(cost, 2),
-            "Güncel Değer": value,
-            "K/Z (TL)": pnl,
-            "K/Z (%)": pnl_pct,
+            "Fon": code, "Birim": round(units, 4),
+            "Giriş Fiyatı": round(entry_price, 4), "Güncel Fiyat": round(current_price, 4),
+            "Maliyet": round(cost, 2), "Güncel Değer": value,
+            "K/Z (TL)": pnl, "K/Z (%)": pnl_pct,
         })
-
     total_pnl = round(current_value - total_cost, 4)
     total_pnl_pct = round((current_value / total_cost - 1) * 100, 4) if total_cost > 0 else 0
-
-    return {
-        "rows": rows,
-        "total_cost": total_cost,
-        "current_value": current_value,
-        "total_pnl": total_pnl,
-        "total_pnl_pct": total_pnl_pct,
-    }
+    return {"rows": rows, "total_cost": total_cost, "current_value": current_value,
+            "total_pnl": total_pnl, "total_pnl_pct": total_pnl_pct}
 
 # ============================================================
 # FON YÖNETİMİ
@@ -379,14 +397,14 @@ def auto_generate_paper_trades(template_name: str, mode: str = "append"):
         save_state()
     return True, f"{len(new_tx)} otomatik işlem oluşturuldu ({template_name}, mod: {mode})"
 
-
 # ============================================================
 # SESSION STATE
 # ============================================================
 def init_state():
     if st.session_state.get("state_version") != STATE_VERSION:
         for k in list(st.session_state.keys()):
-            del st.session_state[k]
+            if k not in ["user", "supabase_session", "state_loaded"]:
+                del st.session_state[k]
         st.session_state.state_version = STATE_VERSION
         st.session_state.initialized = True
         st.session_state.start_date = SIM_END_DATE
@@ -403,14 +421,74 @@ def init_state():
         st.session_state.red_flag_dismissed = set()
         st.session_state.template_history = []
         st.session_state.auto_save = True
-        if STATE_FILE.exists():
-            ok, msg = load_state()
-            if ok:
-                st.session_state["_load_msg"] = msg
 
 
 init_state()
 
+# ============================================================
+# KİMLİK DOĞRULAMA
+# ============================================================
+def login_screen():
+    st.markdown("""
+    <div style='text-align: center; padding: 2rem 0;'>
+        <h1>📈 Katılım Fonu Paper Trade</h1>
+        <p style='color: #666;'>Kişisel portföy takip platformu</p>
+    </div>
+    """, unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        tab_login, tab_signup = st.tabs(["🔑 Giriş Yap", "📝 Kayıt Ol"])
+        with tab_login:
+            with st.form("login_form"):
+                email = st.text_input("E-posta", key="login_email")
+                password = st.text_input("Şifre", type="password", key="login_password")
+                submitted = st.form_submit_button("Giriş Yap", use_container_width=True)
+                if submitted:
+                    try:
+                        response = supabase.auth.sign_in_with_password({
+                            "email": email, "password": password
+                        })
+                        st.session_state.user = response.user
+                        st.session_state.supabase_session = response.session
+                        st.success("✅ Giriş başarılı!")
+                        time.sleep(0.5)
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Giriş hatası: {e}")
+        with tab_signup:
+            with st.form("signup_form"):
+                new_email = st.text_input("E-posta", key="signup_email")
+                new_password = st.text_input("Şifre (min 6 karakter)", type="password", key="signup_password")
+                new_password2 = st.text_input("Şifre (tekrar)", type="password", key="signup_password2")
+                submitted = st.form_submit_button("Kayıt Ol", use_container_width=True)
+                if submitted:
+                    if len(new_password) < 6:
+                        st.error("❌ Şifre en az 6 karakter olmalı")
+                    elif new_password != new_password2:
+                        st.error("❌ Şifreler uyuşmuyor")
+                    else:
+                        try:
+                            response = supabase.auth.sign_up({
+                                "email": new_email, "password": new_password
+                            })
+                            if response.user:
+                                st.session_state.user = response.user
+                                st.session_state.supabase_session = response.session
+                                st.success("✅ Kayıt başarılı!")
+                                time.sleep(0.5)
+                                st.rerun()
+                        except Exception as e:
+                            st.error(f"❌ Kayıt hatası: {e}")
+
+
+if "user" not in st.session_state or st.session_state.user is None:
+    login_screen()
+    st.stop()
+
+if "state_loaded" not in st.session_state:
+    ok, msg = load_state()
+    st.session_state.state_loaded = True
+    st.session_state["_load_msg"] = msg
 
 # ============================================================
 # YARDIMCI FONKSİYONLAR
@@ -499,17 +577,15 @@ def get_portfolio_history(positions):
 
 
 # ============================================================
-# SHARPE — 30 GÜN KONTROLÜ EKLENDİ
+# SHARPE
 # ============================================================
 def calculate_all_sharpes(positions):
     port_values, daily_rets = get_portfolio_history(positions)
     if daily_rets is None or len(daily_rets) < 30:
         return None
-
     days_held_check = (SIM_END_DATE - st.session_state.start_date).days
     if days_held_check < 30:
         return None
-
     start_ts = pd.Timestamp(st.session_state.start_date)
     end_ts = port_values.index[-1]
     try:
@@ -544,12 +620,8 @@ def calculate_all_sharpes(positions):
     }
 
 
-# ============================================================
-# KIRMIZI BAYRAK — 30 GÜN ERKEN ÇIKIŞ EKLENDİ
-# ============================================================
 def check_red_flags(df_pos, totals, sharpe_data, days_held):
     flags = []
-
     if days_held < 30:
         if not df_pos.empty:
             max_drift = df_pos["Sapma (pp)"].abs().max()
@@ -560,7 +632,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                               "mesaj": f"Maks. sapma **{max_drift:.2f} pp** > {threshold}%",
                               "aksiyon": "Rebalans sekmesinden uygulayın"})
         return flags
-
     if sharpe_data and sharpe_data.get("max_dd") is not None:
         dd = sharpe_data["max_dd"]
         if dd < RED_FLAG_THRESHOLDS["max_drawdown_kritik"]:
@@ -573,7 +644,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "⚠️ Drawdown Artıyor",
                           "mesaj": f"Maks. düşüş **{dd*100:.2f}%**",
                           "aksiyon": "Risk yönetimini gözden geçirin"})
-
     if sharpe_data:
         vol = sharpe_data.get("annual_vol", 0)
         if vol > RED_FLAG_THRESHOLDS["volatilite_kritik"]:
@@ -586,7 +656,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "⚠️ Volatilite Yükseldi",
                           "mesaj": f"Yıllık volatilite **%{vol*100:.2f}**",
                           "aksiyon": "Portföy çeşitlendirmesini artırın"})
-
     if sharpe_data:
         sh = sharpe_data.get("sharpe_forward", 0)
         if sh < RED_FLAG_THRESHOLDS["sharpe_negatif"]:
@@ -594,7 +663,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "⚠️ Sharpe Negatif",
                           "mesaj": f"Forward Sharpe **{sh:+.3f}**",
                           "aksiyon": "Daha yüksek getirili fonlar düşünün"})
-
     if not df_pos.empty:
         max_w = df_pos["Ağırlık (%)"].max()
         max_code = df_pos.loc[df_pos["Ağırlık (%)"].idxmax(), "Fon"]
@@ -608,7 +676,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "⚠️ Yüksek Konsantrasyon",
                           "mesaj": f"**{max_code}** fonu **%{max_w:.1f}**",
                           "aksiyon": "Diğer fonlara ağırlık verin"})
-
     if not df_pos.empty:
         tech_mask = df_pos["Tür"].str.contains("Teknoloji", na=False)
         tech_w = df_pos.loc[tech_mask, "Ağırlık (%)"].sum()
@@ -617,7 +684,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "🚨 Sektör Konsantrasyonu",
                           "mesaj": f"Teknoloji fonları toplam **%{tech_w:.1f}**",
                           "aksiyon": "Altın, kira sertifikası veya hisse fonlarla dengeleyin"})
-
     if days_held >= 30 and totals.get("reel") is not None:
         reel = totals["reel"]
         if reel < RED_FLAG_THRESHOLDS["reel_getiri_kritik"]:
@@ -625,7 +691,6 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "🚨 Enflasyon Altında Getiri",
                           "mesaj": f"Reel getiri **{reel*100:+.2f}%**",
                           "aksiyon": "Agresif veya Teknoloji Odaklı şablonu değerlendirin"})
-
     if not df_pos.empty:
         max_drift = df_pos["Sapma (pp)"].abs().max()
         threshold = st.session_state.get("drift_threshold", 5)
@@ -639,13 +704,9 @@ def check_red_flags(df_pos, totals, sharpe_data, days_held):
                           "baslik": "⚠️ Rebalans Gerekli",
                           "mesaj": f"Maks. sapma **{max_drift:.2f} pp**",
                           "aksiyon": "Rebalans sekmesinden uygulayın"})
-
     return flags
 
 
-# ============================================================
-# MONTE CARLO
-# ============================================================
 def run_monte_carlo(positions, n_sims=MC_SIMULATIONS, n_days=MC_DAYS):
     port_values, daily_rets = get_portfolio_history(positions)
     if daily_rets is None or len(daily_rets) < 30:
@@ -665,9 +726,6 @@ def run_monte_carlo(positions, n_sims=MC_SIMULATIONS, n_days=MC_DAYS):
     return simulations
 
 
-# ============================================================
-# JSON EXPORT / IMPORT
-# ============================================================
 def export_portfolio_json():
     data = {
         "funds": st.session_state.funds,
@@ -710,9 +768,6 @@ def import_portfolio_json(json_str: str):
         return False, f"❌ Hata: {e}"
 
 
-# ============================================================
-# REBALANS TAKVİMİ
-# ============================================================
 def get_rebalance_rule(freq: str):
     if freq == "3 Aylık": return pd.DateOffset(months=3)
     if freq == "6 Aylık": return pd.DateOffset(months=6)
@@ -744,176 +799,37 @@ def days_until(target):
     if target is None: return None
     return (pd.Timestamp(target) - pd.Timestamp(SIM_END_DATE)).days
 
-
-# ============================================================
-# PDF
-# ============================================================
-def get_font_path():
-    for p in ["C:/Windows/Fonts/arial.ttf", "C:/Windows/Fonts/calibri.ttf",
-              "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-              "/Library/Fonts/Arial.ttf"]:
-        if os.path.exists(p): return p
-    return None
-
-
-def build_pdf_report(df_pos, totals, positions, days_held, next_reb, sharpe_data=None, red_flags=None):
-    try:
-        from fpdf import FPDF
-    except ImportError:
-        return None, "fpdf2 kurulu değil. `pip install fpdf2`"
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-    font_path = get_font_path()
-    FONT = "Helvetica"; FONT_OK = False
-    if font_path:
-        try:
-            pdf.add_font("Custom", "", font_path)
-            pdf.add_font("Custom", "B", font_path)
-            pdf.add_font("Custom", "I", font_path)
-            pdf.add_font("Custom", "BI", font_path)
-            FONT = "Custom"; FONT_OK = True
-        except Exception: pass
-    def set_font(size, style=""):
-        if FONT_OK:
-            try: pdf.set_font(FONT, style=style, size=size); return
-            except Exception: pass
-        safe = style if style in ("", "B", "I", "BI") else ""
-        pdf.set_font("Helvetica", style=safe, size=size)
-    set_font(18, "B")
-    pdf.cell(0, 10, "Katilim Fonu Portfoy Raporu", ln=True, align="C")
-    set_font(10)
-    pdf.cell(0, 6, f"Rapor: {SIM_END_DATE.strftime('%d.%m.%Y')}  |  "
-                   f"Baslangic: {st.session_state.start_date.strftime('%d.%m.%Y')}  |  "
-                   f"Gecen: {days_held} gun", ln=True, align="C")
-    pdf.ln(4)
-    if red_flags:
-        set_font(13, "B"); pdf.set_text_color(200, 0, 0)
-        pdf.cell(0, 8, "! UYARILAR", ln=True); pdf.set_text_color(0, 0, 0)
-        set_font(9)
-        for flag in red_flags[:5]:
-            prefix = "[KRITIK]" if flag["seviye"] == "kritik" else "[UYARI]"
-            pdf.cell(0, 5, f"{prefix} {flag['baslik']}", ln=True)
-            pdf.cell(0, 5, f"  {flag['mesaj']}", ln=True)
-        pdf.ln(3)
-    set_font(13, "B"); pdf.cell(0, 8, "1. Portfoy Ozeti", ln=True)
-    set_font(10)
-    kpi_rows = [
-        ("Baslangic Sermayesi", f"{st.session_state.initial_capital:,.0f} TL"),
-        ("Brut Deger", f"{totals['total_value']:,.0f} TL"),
-        ("Net Deger", f"{totals['total_net']:,.0f} TL"),
-        ("Brut Kar/Zarar", f"{totals['gross_pl']:+,.0f} TL"),
-        ("Toplam Stopaj", f"-{totals['total_tax']:,.0f} TL"),
-        ("Net Kar/Zarar", f"{totals['net_pl']:+,.0f} TL"),
-        ("Nominal Getiri", f"{totals['nominal']*100:+.2f}%"),
-    ]
-    if days_held >= 1 and totals.get("reel") is not None:
-        kpi_rows.append(("Reel Getiri", f"{totals['reel']*100:+.2f}%"))
-        kpi_rows.append(("Doviz Ustu Getiri", f"{totals['doviz']*100:+.2f}%"))
-    if sharpe_data is not None and sharpe_data.get("n_days", 0) >= 30:
-        s = sharpe_data
-        kpi_rows.extend([
-            ("Nominal Sharpe", f"{s['sharpe_nominal']:+.3f}"),
-            ("Forward Sharpe", f"{s['sharpe_forward']:+.3f}"),
-            ("Reel Sharpe", f"{s['sharpe_reel']:+.3f}"),
-            ("Yillik Volatilite", f"{s['annual_vol']*100:.2f}%"),
-            ("Maks Drawdown", f"{s['max_dd']*100:.2f}%"),
-        ])
-    for label, val in kpi_rows:
-        set_font(10); pdf.cell(90, 6, label, border=0)
-        set_font(10, "B"); pdf.cell(0, 6, val, border=0, ln=True)
-    pdf.ln(5)
-    set_font(13, "B"); pdf.cell(0, 8, "2. Pozisyonlar", ln=True)
-    headers = ["Fon", "Birim", "A.Fiyat", "G.Fiyat", "Deger", "Stopaj", "Net"]
-    widths = [18, 28, 24, 24, 32, 24, 32]
-    set_font(9, "B")
-    for h, w in zip(headers, widths):
-        pdf.cell(w, 7, h, border=1, align="C")
-    pdf.ln()
-    set_font(8)
-    for _, row in df_pos.iterrows():
-        pdf.cell(widths[0], 6, str(row["Fon"]), border=1)
-        pdf.cell(widths[1], 6, f"{row['Birim']:,.2f}", border=1, align="R")
-        pdf.cell(widths[2], 6, f"{row['Alış Fiyatı']:.4f}", border=1, align="R")
-        pdf.cell(widths[3], 6, f"{row['Güncel Fiyat']:.4f}", border=1, align="R")
-        pdf.cell(widths[4], 6, f"{row['Güncel Değer']:,.0f}", border=1, align="R")
-        pdf.cell(widths[5], 6, f"{row['Stopaj (TL)']:,.0f}", border=1, align="R")
-        pdf.cell(widths[6], 6, f"{row['Net Değer']:,.0f}", border=1, align="R")
-        pdf.ln()
-    pdf.ln(4)
-    set_font(8, "I")
-    pdf.multi_cell(0, 5, "Uyari: Bu rapor bir paper trade simulasyonudur.")
-    out = pdf.output()
-    return (bytes(out) if not isinstance(out, str) else out.encode("latin-1")), None
-
-
-# ============================================================
-# EXCEL
-# ============================================================
-def build_excel(df_pos, df_funds, df_tx, df_perf, totals, sharpe_data=None,
-                mc_data=None, red_flags=None, paper_trade_groups=None):
-    output = BytesIO()
-    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-        df_pos.to_excel(writer, sheet_name="Pozisyonlar", index=False)
-        def safe_pct(v): return round(v * 100, 4) if v is not None else None
-        summary_rows = [
-            ("Başlangıç Sermayesi", st.session_state.initial_capital),
-            ("Brüt Değer", totals["total_value"]),
-            ("Net Değer (Stopaj Sonrası)", totals["total_net"]),
-            ("Brüt K/Z", totals["gross_pl"]),
-            ("Toplam Stopaj", totals["total_tax"]),
-            ("Net K/Z", totals["net_pl"]),
-            ("Nominal Getiri (%)", safe_pct(totals.get("nominal"))),
-            ("Reel Getiri (%)", safe_pct(totals.get("reel"))),
-            ("Döviz Üstü Getiri (%)", safe_pct(totals.get("doviz"))),
-        ]
-        if sharpe_data is not None and sharpe_data.get("n_days", 0) >= 30:
-            s = sharpe_data
-            summary_rows.extend([
-                ("Nominal Sharpe", round(s["sharpe_nominal"], 4)),
-                ("Forward Sharpe", round(s["sharpe_forward"], 4)),
-                ("Reel Sharpe", round(s["sharpe_reel"], 4)),
-                ("Yıllık Getiri (%)", round(s["annual_return"] * 100, 2)),
-                ("Yıllık Volatilite (%)", round(s["annual_vol"] * 100, 2)),
-                ("Maks. Drawdown (%)", round(s["max_dd"] * 100, 2)),
-            ])
-        pd.DataFrame(summary_rows, columns=["Gösterge", "Değer"]).to_excel(
-            writer, sheet_name="Özet", index=False)
-        if red_flags:
-            rf_rows = [{"Seviye": f["seviye"], "Başlık": f["baslik"],
-                        "Mesaj": f["mesaj"], "Aksiyon": f["aksiyon"]} for f in red_flags]
-            pd.DataFrame(rf_rows).to_excel(writer, sheet_name="Uyarılar", index=False)
-        if df_funds is not None and not df_funds.empty:
-            df_funds.to_excel(writer, sheet_name="Fonlar", index=False)
-        if df_tx is not None and not df_tx.empty:
-            df_tx.to_excel(writer, sheet_name="İşlemler", index=False)
-        if df_perf is not None and not df_perf.empty:
-            df_perf.to_excel(writer, sheet_name="Performans", index=False)
-        if paper_trade_groups:
-            all_rows = []
-            for tpl, rows in paper_trade_groups.items():
-                for r in rows:
-                    all_rows.append({"Şablon": tpl, **r})
-            if all_rows:
-                pd.DataFrame(all_rows).to_excel(writer, sheet_name="Paper Trades", index=False)
-        pd.DataFrame(list(st.session_state.target_weights.items()),
-                     columns=["Fon", "Hedef Ağırlık"]).to_excel(
-            writer, sheet_name="Hedef Ağırlıklar", index=False)
-    return output.getvalue()
-
-
 # ============================================================
 # SIDEBAR
 # ============================================================
 with st.sidebar:
-    st.markdown("## ⚙️ Portföy Ayarları")
+    user = st.session_state.get("user")
+    if user:
+        st.markdown(f"### 👤 {user.email}")
+        if st.button("🚪 Çıkış Yap", use_container_width=True):
+            try:
+                supabase.auth.sign_out()
+            except Exception:
+                pass
+            for k in list(st.session_state.keys()):
+                del st.session_state[k]
+            st.rerun()
+        st.markdown("---")
+
     if "_load_msg" in st.session_state:
-        st.success(st.session_state.pop("_load_msg"))
+        msg = st.session_state.pop("_load_msg")
+        if msg and "✅" in str(msg):
+            st.success(msg)
+        elif msg and "🆕" in str(msg):
+            st.info(msg)
+
+    st.markdown("## ⚙️ Portföy Ayarları")
     st.session_state.use_tefas = st.toggle("🌐 TEFAS Canlı Fiyat",
                                             value=st.session_state.use_tefas)
     if st.session_state.use_tefas:
         if st.button("🔄 TEFAS Fiyatlarını Güncelle", use_container_width=True):
-            progress_bar = st.progress(0.0); status_text = st.empty()
+            progress_bar = st.progress(0.0)
+            status_text = st.empty()
             def update_progress(i, total, code):
                 progress_bar.progress((i + 1) / total)
                 status_text.text(f"⏳ {code} çekiliyor... ({i+1}/{total})")
@@ -937,8 +853,9 @@ with st.sidebar:
             except Exception as e:
                 progress_bar.empty(); status_text.empty()
                 st.error(f"❌ Hata: {e}")
+
     st.markdown("---")
-    st.markdown("### 💾 Veri Kalıcılığı")
+    st.markdown("### 💾 Veri (Supabase)")
     st.session_state.auto_save = st.toggle("🔄 Otomatik kaydet",
                                             value=st.session_state.get("auto_save", True))
     col_save, col_load = st.columns(2)
@@ -952,11 +869,7 @@ with st.sidebar:
             ok, msg = load_state()
             if ok: st.success(msg); time.sleep(0.6); st.rerun()
             else: st.error(msg)
-    if STATE_FILE.exists():
-        try:
-            last = datetime.fromtimestamp(STATE_FILE.stat().st_mtime)
-            st.caption(f"📁 Son kayıt: **{last.strftime('%d.%m.%Y %H:%M')}**")
-        except Exception: pass
+
     st.markdown("---")
     st.markdown("### 🎨 Portföy Şablonları")
     template_names = list(PORTFOLIO_TEMPLATES.keys())
@@ -976,18 +889,20 @@ with st.sidebar:
             if ok:
                 if auto_tx:
                     ok2, msg2 = auto_generate_paper_trades(selected_template, mode=tx_mode)
-                    st.success(f"{msg} | {msg2}" if ok2 else f"{msg} | {msg2}")
+                    st.success(f"{msg} | {msg2}")
                 else:
                     st.success(msg)
                 st.balloons(); time.sleep(0.8); st.rerun()
             else:
                 st.error(msg)
+
     st.markdown("---")
     st.session_state.initial_capital = st.number_input(
         "Başlangıç Sermayesi (TL)", min_value=1000.0,
         value=st.session_state.initial_capital, step=10000.0, format="%.2f")
     new_date = st.date_input("Başlangıç Tarihi", value=st.session_state.start_date.date())
     st.session_state.start_date = datetime.combine(new_date, datetime.min.time())
+
     st.markdown("### 🎯 Hedef Ağırlıklar (%)")
     total_w = 0; new_weights = {}
     for code in list(st.session_state.funds.keys()):
@@ -1000,6 +915,7 @@ with st.sidebar:
     st.session_state.target_weights = {k: v for k, v in new_weights.items() if v > 0}
     if abs(total_w - 100) > 0.01: st.warning(f"⚠️ Toplam: %{total_w}")
     else: st.success(f"✅ Toplam: %{total_w}")
+
     st.markdown("### 📅 Rebalans")
     st.session_state.rebalance_freq = st.selectbox(
         "Sıklık", ["3 Aylık", "6 Aylık", "Yıllık", "Eşik Bazlı (%5 sapma)"], index=0)
@@ -1011,6 +927,7 @@ with st.sidebar:
         if _d == 0: st.error("🔔 **Bugün rebalans günü!**")
         elif _d is not None and _d <= 7: st.warning(f"⏰ **{_d} gün kaldı**")
         elif _d is not None: st.info(f"📅 Sonraki: {_next.strftime('%d.%m.%Y')} ({_d} gün)")
+
     st.markdown("---")
     st.markdown("### 📦 Portföy Kopyalama")
     with st.expander("📤 Portföyü Dışa Aktar (JSON)"):
@@ -1030,6 +947,7 @@ with st.sidebar:
                 if ok: st.success(msg); time.sleep(0.6); st.rerun()
                 else: st.error(msg)
             else: st.warning("Dosya yükleyin veya JSON yapıştırın.")
+
     st.markdown("---")
     st.markdown("### ➕ Fon Ekle")
     with st.expander("📥 TEFAS'tan Fon Ekle"):
@@ -1068,6 +986,7 @@ with st.sidebar:
             ok, msg = remove_fund(remove_code)
             if ok: st.success(msg); st.rerun()
             else: st.error(msg)
+
     st.markdown("---")
     tefas_ok = st.session_state.use_tefas and len(st.session_state.get("tefas_series", {})) > 0
     st.caption(f"📌 Fiyat kaynağı: **{'🟢 TEFAS' if tefas_ok else '🟡 Simülasyon'}**")
@@ -1077,7 +996,8 @@ with st.sidebar:
 # BAŞLIK
 # ============================================================
 st.title("📈 Katılım Fonu Paper Trade & Rebalans Paneli")
-st.caption(f"Başlangıç: **{st.session_state.start_date.strftime('%d.%m.%Y')}** | "
+st.caption(f"👤 **{st.session_state.user.email}** | "
+           f"Başlangıç: **{st.session_state.start_date.strftime('%d.%m.%Y')}** | "
            f"Sermaye: **{st.session_state.initial_capital:,.0f} TL** | "
            f"Referans: **{SIM_END_DATE.strftime('%d.%m.%Y')}**")
 
@@ -1149,7 +1069,6 @@ red_flags = check_red_flags(df_pos, totals, sharpe_data, days_held)
 kritik_count = sum(1 for f in red_flags if f["seviye"] == "kritik")
 uyari_count = sum(1 for f in red_flags if f["seviye"] == "uyari")
 
-# KIRMIZI BAYRAK PANELİ
 if red_flags:
     if kritik_count > 0:
         st.error(f"🚨 **{kritik_count} KRİTİK UYARI** ve {uyari_count} uyarı tespit edildi")
@@ -1165,7 +1084,6 @@ if red_flags:
 else:
     st.success("✅ **Tüm risk göstergeleri normal** — kırmızı bayrak yok")
 
-# KPI
 c1, c2, c3, c4, c5 = st.columns(5)
 c1.metric("Portföy (Brüt)", f"{total_value:,.0f} TL",
           f"{(total_value/st.session_state.initial_capital - 1)*100:+.2f}%" if st.session_state.initial_capital else "—")
@@ -1213,7 +1131,6 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs(
      "📤 Rapor & Export", "🎲 Monte Carlo", "📐 Risk Analizi",
      "🚨 Uyarılar", "📋 Paper Trade Sonuçları"])
 
-# ---------------- TAB 1: GENEL BAKIŞ ----------------
 with tab1:
     if df_pos.empty:
         st.info("Henüz pozisyon yok.")
@@ -1259,7 +1176,6 @@ with tab1:
         fig2.update_layout(height=380, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig2, use_container_width=True)
 
-# ---------------- TAB 2: PERFORMANS ----------------
 with tab2:
     st.subheader("Portföy Değeri vs Benchmarklar (Net)")
     df_hist = st.session_state.price_history.copy()
@@ -1327,7 +1243,6 @@ with tab2:
                              yaxis_title="%", yaxis_ticksuffix="%")
         st.plotly_chart(fig_dd, use_container_width=True)
 
-# ---------------- TAB 3: REBALANS ----------------
 with tab3:
     if not df_pos.empty:
         st.subheader("Hedef vs Gerçek — Sapma Analizi")
@@ -1385,7 +1300,6 @@ with tab3:
     else:
         st.info("Pozisyon yok.")
 
-# ---------------- TAB 4: FON ANALİZİ ----------------
 with tab4:
     st.subheader("Fon Karşılaştırma Tablosu")
     fund_rows = []
@@ -1409,7 +1323,6 @@ with tab4:
             fig_c.update_layout(height=450, margin=dict(l=10, r=10, t=30, b=10))
             st.plotly_chart(fig_c, use_container_width=True)
 
-# ---------------- TAB 5: VERGİ ANALİZİ ----------------
 with tab5:
     if not df_pos.empty:
         st.subheader("💰 Stopaj Sonrası Net Getiri")
@@ -1431,7 +1344,6 @@ with tab5:
           .background_gradient(subset=["Net K/Z (%)"], cmap="RdYlGn"),
             use_container_width=True, hide_index=True)
 
-# ---------------- TAB 6: İŞLEM GEÇMİŞİ ----------------
 with tab6:
     st.subheader("📝 Manuel İşlem Girişi")
     if st.session_state.funds:
@@ -1505,84 +1417,27 @@ with tab6:
             use_container_width=True, hide_index=True)
     else: st.info("Henüz işlem kaydı yok.")
 
-# ---------------- TAB 7: RAPOR & EXPORT ----------------
 with tab7:
     st.subheader("📤 Rapor ve Veri Dışa Aktarma")
-    auto_txs_for_excel = [t for t in st.session_state.transactions if t.get("tip") == "OTOMATİK ALIM"]
-    paper_groups_for_excel = {}
-    if auto_txs_for_excel:
-        tmp_groups = {}
-        for t in auto_txs_for_excel:
-            tpl = t.get("template", "Bilinmeyen")
-            tmp_groups.setdefault(tpl, []).append(t)
-        for tpl, txs in tmp_groups.items():
-            pnl_data = calculate_group_pnl(txs)
-            paper_groups_for_excel[tpl] = pnl_data["rows"]
-    col_pdf, col_xlsx = st.columns(2)
-    with col_pdf:
-        st.markdown("### 📄 PDF Rapor")
-        if st.button("📄 PDF Rapor Oluştur", type="primary", use_container_width=True):
-            with st.spinner("PDF üretiliyor..."):
-                pdf_bytes, err = build_pdf_report(df_pos, totals, positions,
-                                                   days_held, next_reb, sharpe_data, red_flags)
-            if err: st.error(f"❌ {err}")
-            elif pdf_bytes:
-                st.session_state["_pdf_bytes"] = pdf_bytes
-                st.success(f"✅ PDF hazır ({len(pdf_bytes):,} byte)")
-        if st.session_state.get("_pdf_bytes"):
-            st.download_button("⬇️ PDF İndir",
-                               data=st.session_state["_pdf_bytes"],
-                               file_name=f"portfoy_raporu_{SIM_END_DATE.strftime('%Y%m%d')}.pdf",
-                               mime="application/pdf", use_container_width=True)
-    with col_xlsx:
-        st.markdown("### 📊 Excel Export")
-        if st.button("📊 Excel Oluştur", type="primary", use_container_width=True):
-            with st.spinner("Excel üretiliyor..."):
-                fund_rows = []
-                for code in st.session_state.funds:
-                    meta = get_fund_meta(code)
-                    fund_rows.append({
-                        "Kod": code, "Ad": meta.get("name", code),
-                        "Tür": meta.get("type", "—"),
-                        "Güncel Fiyat": meta.get("price", 0),
-                        "1 Yıl (%)": (meta.get("r1y") or 0) * 100,
-                        "Stopaj (%)": (meta.get("tax") or 0) * 100,
-                        "Volatilite": meta.get("vol", 0.30)})
-                df_funds_exp = pd.DataFrame(fund_rows)
-                periods = {"1 Hafta": 7, "1 Ay": 30, "3 Ay": 90, "6 Ay": 180, "YBB": 365}
-                perf_rows = []
-                for label, days in periods.items():
-                    d0 = today - timedelta(days=days)
-                    v0 = net_portfolio_on(d0, positions); v1 = total_net_value
-                    if v0 <= 0: continue
-                    r = (v1 / v0 - 1) * 100
-                    tufe_r = ((1 + MACRO["tufe"]) ** (days / 365) - 1) * 100
-                    usd_r = ((1 + USD_RET_ASSUMPTION) ** (days / 365) - 1) * 100
-                    perf_rows.append({"Dönem": label, "Net Portföy (%)": r,
-                                      "TÜFE (%)": tufe_r, "USD/TRY (%)": usd_r,
-                                      "Reel Fark (pp)": r - tufe_r,
-                                      "Döviz Fark (pp)": r - usd_r})
-                df_perf_exp = pd.DataFrame(perf_rows)
-                xlsx_bytes = build_excel(df_pos, df_funds_exp, df_tx, df_perf_exp,
-                                          totals, sharpe_data, mc_data=None,
-                                          red_flags=red_flags,
-                                          paper_trade_groups=paper_groups_for_excel)
-                st.session_state["_xlsx_bytes"] = xlsx_bytes
-                st.success(f"✅ Excel hazır ({len(xlsx_bytes):,} byte)")
-        if st.session_state.get("_xlsx_bytes"):
-            st.download_button("⬇️ Excel İndir",
-                               data=st.session_state["_xlsx_bytes"],
-                               file_name=f"portfoy_{SIM_END_DATE.strftime('%Y%m%d')}.xlsx",
-                               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    st.info("💾 Verileriniz otomatik olarak Supabase'e kaydedilir. JSON export ek yedek içindir.")
+    col_csv1, col_csv2 = st.columns(2)
+    with col_csv1:
+        st.download_button("📄 Pozisyonlar (CSV)",
+                           data=df_pos.to_csv(index=False).encode("utf-8"),
+                           file_name="pozisyonlar.csv", mime="text/csv",
+                           use_container_width=True)
+    with col_csv2:
+        if not df_tx.empty:
+            st.download_button("📄 İşlemler (CSV)",
+                               data=df_tx.to_csv(index=False).encode("utf-8"),
+                               file_name="islemler.csv", mime="text/csv",
                                use_container_width=True)
 
-# ---------------- TAB 8: MONTE CARLO ----------------
 with tab8:
     st.subheader("🎲 Monte Carlo Simülasyonu")
     st.markdown(f"**{MC_SIMULATIONS:,}** simülasyon × **{MC_DAYS}** iş günü (~1 yıl)")
     if days_held < 30:
-        st.info(f"ℹ️ Monte Carlo için en az 30 günlük veri gerekli. "
-                f"Şu an **{days_held} gün** geçti.")
+        st.info(f"ℹ️ Monte Carlo için en az 30 günlük veri gerekli. Şu an **{days_held} gün** geçti.")
     else:
         if st.button("🎲 Simülasyonu Çalıştır", type="primary", use_container_width=True):
             with st.spinner(f"{MC_SIMULATIONS} senaryo hesaplanıyor..."):
@@ -1627,7 +1482,6 @@ with tab8:
         else:
             st.info("👆 Simülasyonu çalıştırmak için butona basın.")
 
-# ---------------- TAB 9: RİSK ANALİZİ ----------------
 with tab9:
     st.subheader("📐 Risk ve Performans Metrikleri")
     if sharpe_data is None:
@@ -1662,12 +1516,10 @@ with tab9:
             r3.metric("Reel Sortino", f"{s['sortino_reel']:.3f}")
         r4.metric("Maks. Drawdown", f"{s['max_dd']*100:.2f}%", delta_color="inverse")
 
-# ---------------- TAB 10: UYARILAR ----------------
 with tab10:
     st.subheader("🚨 Kırmızı Bayrak Sistemi")
     if days_held < 30:
-        st.info(f"ℹ️ **Uyarı sistemi için en az 30 gün gerekli.** "
-                f"Şu an **{days_held} gün** geçti.")
+        st.info(f"ℹ️ **Uyarı sistemi için en az 30 gün gerekli.** Şu an **{days_held} gün** geçti.")
     if red_flags:
         kritik = [f for f in red_flags if f["seviye"] == "kritik"]
         uyarilar = [f for f in red_flags if f["seviye"] == "uyari"]
@@ -1706,7 +1558,6 @@ with tab10:
     ])
     st.dataframe(criteria, use_container_width=True, hide_index=True)
 
-# ---------------- TAB 11: PAPER TRADE SONUÇLARI ----------------
 with tab11:
     st.subheader("📋 Paper Trade Sonuçları")
     st.markdown("Otomatik oluşturulan paper trade gruplarının **güncel K/Z durumu**")
@@ -1789,11 +1640,8 @@ src_note = ("🟢 TEFAS canlı verisi kullanılıyor." if tefas_aktif
 flag_note = ""
 if red_flags:
     flag_note = f" | 🚨 **{kritik_count} kritik, {uyari_count} uyarı**"
-save_note = ""
-if STATE_FILE.exists():
-    try:
-        last = datetime.fromtimestamp(STATE_FILE.stat().st_mtime)
-        save_note = f" | 💾 Son kayıt: {last.strftime('%d.%m %H:%M')}"
-    except Exception: pass
-st.caption(f"⚠️ **Uyarı:** Bu panel bir *paper trade* simülasyonudur. {src_note}{flag_note}{save_note} "
-           "Stopaj oranları 2026 vergi mevzuatına göre varsayılmıştır.")
+st.caption(
+    f"⚠️ **Uyarı:** Bu panel bir *paper trade* simülasyonudur. {src_note}{flag_note} "
+    "Stopaj oranları 2026 vergi mevzuatına göre varsayılmıştır. "
+    "Verileriniz Supabase'de güvenli şekilde saklanır."
+)
