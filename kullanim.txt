@@ -1,0 +1,149 @@
+🧭 1. Başlangıç: Varlık Sınıfı Seçimi
+
+Uygulama açıldığında ilk olarak bir varlık sınıfı seçmeniz gerekir:
+
+    Hisse (BIST, ABD, Avrupa)
+
+    Kripto
+
+    Emtia (Altın, Gümüş, Petrol)
+
+    Döviz
+
+    ETF
+
+    TEFAS Fonları
+
+Seçiminiz, o sınıfa ait sembolleri yükler ve verileri çeker.
+
+    💡 Öneri: İlk kez kullanıyorsanız “hisse_abd” veya “etf” ile başlayın, veri çekmesi hızlıdır.
+
+⚙️ 2. Parametre Ayarları
+
+Her backtest veya sinyal üretimi öncesi aşağıdaki parametreleri ayarlayabilirsiniz:
+Parametre	Ne İşe Yarar?
+Başlangıç Sermayesi	Simülasyonun başlangıç bakiyesi.
+Geçmiş Yıl	Backtest'in kaç yıllık veriye bakacağı.
+Maks. Pozisyon Oranı	Portföyün % kaçı riske atılacak (ör. %70).
+Stop-Loss	Portföy % kaç düşünce tüm pozisyonlar kapatılsın (ör. %12).
+Seçilecek Varlık Sayısı	Her ay en iyi kaç varlık seçilsin (ör. 3).
+Momentum Bakış	Son kaç günün fiyat hareketine bakılacağı (ör. 45 gün).
+
+Bu ayarları, her sekmede ayrı ayrı değiştirebilirsiniz.
+📊 3. Backtest & Sonuçlar (Tab 1)
+
+Amacı: Geçmiş veriler üzerinde stratejinin nasıl performans göstereceğini test etmek.
+Nasıl çalıştırılır?
+
+    İstediğiniz parametreleri ayarlayın.
+
+    “🚀 Backtest’i Çalıştır” butonuna tıklayın.
+
+Ne görürsünüz?
+
+    Performans Metrikleri: Toplam getiri, yıllık getiri, Sharpe oranı, maksimum kayıp (Max Drawdown), volatilite.
+
+    Grafik: Portföy değerinin zaman içindeki değişimi (nakit, bloke nakit ve varlık değeri ayrı ayrı).
+
+    AI Karar Günlüğü: Hangi tarihte hangi varlıklar seçilmiş, ağırlıkları ve AI’nın gerekçesi.
+
+Ne işinize yarar?
+
+    Hangi parametre kombinasyonlarının daha iyi sonuç verdiğini görmek.
+
+    Stratejinin tarihsel risk/getiri profilini anlamak.
+
+📡 4. Gerçek Zamanlı Sinyal (Tab 2)
+
+Amacı: Bugünün (veya en son işlem gününün) verilerine göre AI’nın önerdiği varlık sepetini görmek.
+Nasıl kullanılır?
+
+    “📡 Yeni Sinyal Oluştur” butonuna tıklayın.
+
+    AI, o anki en güncel fiyatlara ve makro verilere göre en iyi top_n varlığı seçer, ağırlıklarını belirler ve gerekçesini yazar.
+
+Sinyali sanal portföye uygulama
+
+    Sinyal oluştuktan sonra “✅ Sinyali Sanal Portföye Uygula” butonuna tıklayın.
+
+    Bu işlem, sanal bakiyenizle mevcut portföyü satıp yeni varlıkları alır (gerçek para kullanılmaz, simülasyondur).
+
+    İşlem geçmişi ve portföy durumu otomatik güncellenir.
+
+    ⚠️ Bu, gerçek yatırım değildir. Sadece stratejinin canlı veriyle nasıl davranacağını görmek içindir.
+
+📊 5. Sinyal İzleme & Öğrenme (Tab 3)
+
+Amacı: Sanal portföyünüzü takip etmek, geçmiş sinyallerin başarısını değerlendirmek ve AI’nın öğrenme sonuçlarını görmek.
+Portföy Durumu
+
+    Toplam değer, nakit, varlık sayısı ve varlık dağılımı grafikle gösterilir.
+
+    İşlem geçmişi kronolojik olarak listelenir.
+
+AI Öğrenme
+
+    Değerlendirilen Sinyal Sayısı ve Başarılı Sinyal Oranı gösterilir.
+
+    En başarılı sinyallerde en çok tercih edilen varlıklar listelenir (AI gelecekte bu varlıklara öncelik verecektir).
+
+    “🔄 Sinyal Sonuçlarını Güncelle” butonu ile 30 günü dolan sinyallerin getirileri hesaplanır.
+
+Başarısız Sinyal Analizi
+
+    “🔍 Başarısız Sinyalleri Analiz Et” butonu, o dönemdeki makro verileri (altın, dolar, BIST) göstererek neden kaybedildiğini anlamanıza yardımcı olur.
+
+🧪 6. Stres Testi & Optimizasyon (Tab 4)
+Stres Testi
+
+    “📉 Stres Testi Uygula” butonu, tarihsel kriz dönemlerinde (2020 Mart, 2022 Eylül, 2023 Ekim) stratejinin nasıl performans gösterdiğini gösterir.
+
+Otomatik Optimizasyon
+
+    “🔧 Optimizasyonu Başlat” butonu, farklı parametre kombinasyonlarını (lookback, top_n, stop-loss, max_position) dener ve en yüksek Sharpe oranını veren seti bulur.
+
+    Bulunan en iyi parametreler otomatik olarak slider’lara yansır.
+
+Otomatik Strateji Optimizasyonu
+
+    “⚡ Parametreleri Otomatik Güncelle” butonu, gerçek sinyallerin başarı oranına göre parametreleri ince ayar yapar. Başarı oranı %50’nin altına düşerse daha korumacı, %70’in üzerine çıkarsa daha agresif parametrelere geçer.
+
+📄 7. Raporlama (Tab 5)
+
+    “📄 PDF Raporu Oluştur” butonu, son backtest sonuçlarını ve karar günlüğünü içeren bir PDF dosyası oluşturur. Bu raporu paylaşabilir veya arşivleyebilirsiniz.
+
+🧠 Gerçek Hayatta Nasıl Kullanmalısınız?
+Adım	Açıklama
+1. Backtest ile stratejiyi test edin	Hangi varlık sınıfı ve parametreler daha iyi çalışıyor?
+2. Optimizasyonu çalıştırın	En iyi parametreleri bulun.
+3. Gerçek zamanlı sinyalleri takip edin	Haftada bir veya ayda bir yeni sinyal oluşturup sanal portföyünüzü güncelleyin.
+4. Sinyal sonuçlarını değerlendirin	30 gün sonra başarılı/başarısız sinyalleri inceleyin.
+5. Öğrenmeyi güncelleyin	Başarılı sinyallerden öğrenip gelecek kararları iyileştirin.
+6. Gerçek paraya geçmeden önce uzun süre sanal test yapın	En az 6 ay simülasyon sonuçlarını gözlemleyin.
+7. Gerçek yatırımda pozisyon büyüklüğünü sınırlayın	Önerilen ağırlıkları aynen uygulamak yerine, portföyünüzün %10-20’sinden fazlasını tek bir sinyale yatırmayın.
+8. Stop-loss kullanın	Sisteme güvenin ama risk yönetimini elden bırakmayın.
+⚠️ Önemli Uyarılar
+
+    Bu sistem bir karar destek aracıdır, yatırım tavsiyesi değildir.
+
+    Tüm simülasyonlar geçmiş verilere dayanır, gelecek performansı garanti etmez.
+
+    Gerçek para ile işlem yapmadan önce mutlaka kendi araştırmanızı yapın.
+
+    Piysa koşulları değiştikçe parametreleri güncelleyin (3-6 ayda bir).
+
+🚀 Hızlı Başlangıç (ilk 5 dakika)
+
+    Uygulamayı başlatın: streamlit run main.py
+
+    Varlık sınıfı olarak “etf” seçin.
+
+    Backtest’i varsayılan parametrelerle çalıştırın (Stop-Loss %12, top_n=3, lookback=45, max_pos=%70).
+
+    Sonuçları inceleyin.
+
+    Gerçek Zamanlı Sinyal sekmesine geçin, bir sinyal oluşturun ve sanal portföye uygulayın.
+
+    Sinyal İzleme sekmesinden portföyünüzü takip edin.
+
+Sistem artık tamamen sizin kontrolünüzde. Herhangi bir sorunda, konsol çıktısını paylaşarak yardım isteyebilirsiniz. Başarılar! 🚀

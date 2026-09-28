@@ -1,0 +1,71 @@
+📅 Sonraki Adım: 25 Eylül Cuma
+text
+
+┌──────────────────────────────────────────┐
+│  25 EYLÜL 2026 CUMA 19:35                │
+│                                           │
+│  İlk TAM OTOMATİK cron çalışacak:        │
+│  • Veri sync                             │
+│  • Sinyal üretimi                        │
+│  • Paper trade güncelleme                │
+│  • CSV'ye yeni satır (id=2)              │
+│                                           │
+│  20:00'de kontrol et:                    │
+│  python -c "import pandas as pd;         │
+│    df=pd.read_csv('paper_trade_log.csv'); │
+│    print(df.to_string())"                │
+└──────────────────────────────────────────┘
+
+Beklenen: 3 satır (17, 21, 25 Eyl).
+💡 Kısa Vadede Yapılacaklar
+1. Bugün
+text
+
+☐ Streamlit'i aç → 📈 Paper Trading sekmesini gör
+☐ Kol bazlı analizi incele
+☐ XU100'ün son 30 günlük grafiğini kontrol et
+
+2. 25 Eylül Cuma 20:00
+text
+
+☐ Otomatik cron çalıştı mı?
+☐ CSV'de yeni satır var mı?
+☐ auto_runs tablosuna bak
+
+3. Ekim Başı
+text
+
+☐ 4 haftalık paper trading sonucu değerlendir
+☐ XU100 vs portföy karşılaştır
+☐ Karar: devam mı, revize mi?
+
+⚠️ Hatırlatma
+
+Paper trading süresi: Minimum 8 hafta. 4 gün yeterli değil.
+
+Kural: İlk 2 ay boyunca hiçbir gerçek pozisyon alma. Sadece izle.
+
+Karar noktası: 23 Kasım 2026. O zaman şu verileri karşılaştıracaksın:
+
+    Portföy 8 haftalık getirisi
+
+    XU100 8 haftalık getirisi
+
+    Max drawdown
+
+    Haftalık volatilite
+
+8 hafta sonu 3/4 kriter sağlanıyorsa → Faz 3 (küçük sermaye) başlar.
+📌 Özet
+text
+
+✅ Paper trade doğru çalışıyor
+✅ 2 kayıt var (17, 21 Eyl)
+✅ Sistem tamamen otomatik
+⏳ 25 Eylül Cuma'yı bekle
+⏳ 8 hafta paper trading
+⏳ 23 Kasım: karar noktası
+
+Şimdilik yapılacak bir şey yok. Sistem kendi kendine çalışıyor. Her Cuma 20:00'de kontrol et, başka bir şeye gerek yok.
+
+Soruların olursa sor. Yoksa 25 Eylül Cuma'yı birlikte doğrulayalım. 🎯

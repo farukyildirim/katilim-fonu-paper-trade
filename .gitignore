@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.parquet
+*.db
+*.json
+*.pdf
+session_data.json
+.env
+.DS_Store

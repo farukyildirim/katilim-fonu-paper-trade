@@ -1,0 +1,460 @@
+2026-09-11 11:27:28,204 [INFO] tefas_ai: [DB] Migration: ai_signals.is_preview eklendi
+2026-09-11 11:27:28,207 [INFO] tefas_ai: [DB] Migration: ai_signals.risk_level eklendi
+2026-09-11 11:27:28,209 [INFO] tefas_ai: [DB] Migration: ai_regime_state.label_mapping_json eklendi
+2026-09-11 11:27:28,210 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-11 11:27:46,453 [INFO] tefas_ai: [BENCH] 275 satır
+2026-09-11 11:35:33,290 [INFO] tefas_ai: Cron tamamlandı (485.1s)
+2026-09-11 11:37:53,837 [INFO] tefas_ai: [BT] 4 sinyal tarihi işlenecek
+2026-09-11 11:41:11,519 [INFO] tefas_ai: [HMM] Otomatik retrain tetiklendi
+2026-09-11 11:41:13,089 [INFO] tefas_ai: [HMM] Model eğitildi: 100 örnek, seed=2024, skor=-122.65, label_map={1: 2, 2: 1, 0: 0}
+2026-09-11 11:45:25,183 [INFO] tefas_ai: [HMM] Otomatik retrain tetiklendi
+2026-09-11 11:45:25,338 [INFO] tefas_ai: [HMM] Model eğitildi: 130 örnek, seed=2024, skor=-207.28, label_map={1: 2, 2: 1, 0: 0}
+2026-09-11 11:51:35,979 [INFO] tefas_ai: [HMM] Otomatik retrain tetiklendi
+2026-09-11 11:51:36,167 [INFO] tefas_ai: [HMM] Model eğitildi: 160 örnek, seed=123, skor=-281.92, label_map={2: 2, 1: 1, 0: 0}
+2026-09-11 11:57:35,833 [INFO] tefas_ai: [HMM] Otomatik retrain tetiklendi
+2026-09-11 11:57:35,931 [WARNING] hmmlearn.base: Model is not converging.  Current: -354.51842002552587 is not greater than -354.51841923251357. Delta is -7.930123047117377e-07
+2026-09-11 11:57:35,993 [WARNING] hmmlearn.base: Model is not converging.  Current: -354.5184195535804 is not greater than -354.5184107012443. Delta is -8.852336065956479e-06
+2026-09-11 11:57:35,994 [INFO] tefas_ai: [HMM] Model eğitildi: 190 örnek, seed=7, skor=-343.45, label_map={0: 2, 2: 1, 1: 0}
+2026-09-11 12:05:10,199 [INFO] tefas_ai: [DB] Migration: backtest_runs.freq_days eklendi
+2026-09-11 12:05:10,202 [INFO] tefas_ai: [DB] Migration: backtest_signals.max_dd_realized eklendi
+2026-09-11 12:05:28,218 [INFO] tefas_ai: [BT] 19 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-11 12:05:29,897 [INFO] tefas_ai: [HMM] Eğitildi: 61 örnek, seed=7, skor=-100.23, map={1: 2, 0: 1, 2: 0}
+2026-09-11 12:12:28,304 [INFO] tefas_ai: [HMM] Eğitildi: 68 örnek, seed=123, skor=-119.16, map={1: 2, 0: 1, 2: 0}
+2026-09-11 12:17:14,167 [INFO] tefas_ai: [HMM] Eğitildi: 75 örnek, seed=123, skor=-138.25, map={0: 2, 2: 1, 1: 0}
+2026-09-11 12:22:18,985 [INFO] tefas_ai: [HMM] Eğitildi: 81 örnek, seed=2024, skor=-152.81, map={0: 2, 1: 1, 2: 0}
+2026-09-11 12:30:08,202 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=2024, skor=-114.06, map={1: 2, 0: 1, 2: 0}
+2026-09-11 12:41:50,079 [INFO] tefas_ai: [BT] 5/19 tamam
+2026-09-11 12:41:50,801 [INFO] tefas_ai: [HMM] Eğitildi: 95 örnek, seed=123, skor=-119.80, map={1: 2, 2: 1, 0: 0}
+2026-09-11 12:53:58,769 [INFO] tefas_ai: [HMM] Eğitildi: 102 örnek, seed=123, skor=-125.00, map={0: 2, 2: 1, 1: 0}
+2026-09-11 13:00:39,601 [WARNING] hmmlearn.base: Model is not converging.  Current: -148.5215732317651 is not greater than -148.5215594742626. Delta is -1.375750250076635e-05
+2026-09-11 13:00:39,623 [WARNING] hmmlearn.base: Model is not converging.  Current: -148.52157450114623 is not greater than -148.52157260031473. Delta is -1.900831506418399e-06
+2026-09-11 13:00:39,678 [INFO] tefas_ai: [HMM] Eğitildi: 109 örnek, seed=7, skor=-148.52, map={0: 2, 2: 1, 1: 0}
+2026-09-11 13:07:46,535 [WARNING] hmmlearn.base: Model is not converging.  Current: -161.16687872720627 is not greater than -161.16687654346865. Delta is -2.183737620953252e-06
+2026-09-11 13:07:46,666 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=2024, skor=-161.17, map={1: 2, 2: 1, 0: 0}
+2026-09-11 13:15:23,173 [INFO] tefas_ai: [HMM] Eğitildi: 123 örnek, seed=7, skor=-188.58, map={1: 2, 2: 1, 0: 0}
+2026-09-11 13:23:23,451 [INFO] tefas_ai: [BT] 10/19 tamam
+2026-09-11 13:23:23,686 [INFO] tefas_ai: [HMM] Eğitildi: 130 örnek, seed=2024, skor=-207.28, map={1: 2, 2: 1, 0: 0}
+2026-09-11 15:09:14,148 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=2024, skor=-232.39, map={1: 2, 2: 1, 0: 0}
+2026-09-11 15:18:09,881 [INFO] tefas_ai: [HMM] Eğitildi: 144 örnek, seed=999, skor=-241.18, map={1: 2, 0: 1, 2: 0}
+2026-09-11 15:27:38,533 [INFO] tefas_ai: [HMM] Eğitildi: 151 örnek, seed=2024, skor=-263.54, map={1: 2, 2: 1, 0: 0}
+2026-09-11 15:37:19,265 [WARNING] hmmlearn.base: Model is not converging.  Current: -306.58092133647165 is not greater than -306.5804631559494. Delta is -0.00045818052223012273
+2026-09-11 15:37:19,336 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=7, skor=-279.77, map={0: 2, 2: 1, 1: 0}
+2026-09-11 15:47:33,271 [INFO] tefas_ai: [BT] 15/19 tamam
+2026-09-11 15:47:33,619 [INFO] tefas_ai: [HMM] Eğitildi: 165 örnek, seed=999, skor=-295.72, map={0: 2, 1: 1, 2: 0}
+2026-09-11 15:58:31,557 [INFO] tefas_ai: [HMM] Eğitildi: 172 örnek, seed=2024, skor=-311.70, map={0: 2, 2: 1, 1: 0}
+2026-09-11 16:13:39,435 [WARNING] hmmlearn.base: Model is not converging.  Current: -358.91704449192815 is not greater than -358.91668313467443. Delta is -0.0003613572537233267
+2026-09-11 16:13:39,502 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=2024, skor=-327.30, map={2: 2, 0: 1, 1: 0}
+2026-09-11 16:28:56,696 [WARNING] hmmlearn.base: Model is not converging.  Current: -345.4059797726793 is not greater than -345.40596563316797. Delta is -1.4139511335997668e-05
+2026-09-11 16:28:56,696 [INFO] tefas_ai: [HMM] Eğitildi: 186 örnek, seed=123, skor=-339.79, map={1: 2, 2: 1, 0: 0}
+2026-09-11 16:48:57,203 [INFO] tefas_ai: [TEST] PASS: CorrelationFilter
+2026-09-11 16:48:57,203 [INFO] tefas_ai: [TEST] PASS: RegimeDetector labels
+2026-09-11 16:48:57,203 [INFO] tefas_ai: [TEST] PASS: DefensiveAllocator
+2026-09-11 16:48:57,203 [INFO] tefas_ai: [TEST] PASS: PortfolioTracker.compute_delta
+2026-09-11 16:48:57,204 [INFO] tefas_ai: [TEST] PASS: ProfessionalMetrics empty
+2026-09-11 16:48:57,205 [INFO] tefas_ai: [TEST] PASS: CashFlowAnalyzer empty
+2026-09-11 16:48:57,205 [INFO] tefas_ai: [TEST] PASS: Overlap fix
+2026-09-11 16:49:35,065 [INFO] tefas_ai: [BT] 19 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-11 16:49:36,743 [INFO] tefas_ai: [HMM] Eğitildi: 61 örnek, seed=7, skor=-100.23, map={1: 2, 0: 1, 2: 0}
+2026-09-11 16:49:36,744 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-11-28
+2026-09-11 17:03:57,534 [INFO] tefas_ai: [HMM] Eğitildi: 81 örnek, seed=2024, skor=-152.81, map={0: 2, 1: 1, 2: 0}
+2026-09-11 17:03:57,535 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-12-29
+2026-09-11 17:15:29,990 [INFO] tefas_ai: [BT] 5/19 tamam
+2026-09-11 17:22:11,565 [INFO] tefas_ai: [HMM] Eğitildi: 102 örnek, seed=123, skor=-125.00, map={0: 2, 2: 1, 1: 0}
+2026-09-11 17:22:11,565 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2026-01-28
+2026-09-11 17:52:14,880 [INFO] tefas_ai: [BT] 10/19 tamam
+2026-09-11 17:52:15,137 [INFO] tefas_ai: [HMM] Eğitildi: 130 örnek, seed=2024, skor=-207.28, map={1: 2, 2: 1, 0: 0}
+2026-09-11 17:52:15,137 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2026-03-09
+2026-09-11 18:20:06,566 [INFO] tefas_ai: [HMM] Eğitildi: 151 örnek, seed=2024, skor=-263.54, map={1: 2, 2: 1, 0: 0}
+2026-09-11 18:20:06,567 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2026-04-08
+2026-09-11 18:39:50,079 [INFO] tefas_ai: [BT] 15/19 tamam
+2026-09-11 18:50:24,982 [INFO] tefas_ai: [HMM] Eğitildi: 172 örnek, seed=2024, skor=-311.70, map={0: 2, 2: 1, 1: 0}
+2026-09-11 18:50:24,982 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2026-05-11
+2026-09-11 19:28:13,473 [INFO] tefas_ai: [BT] HMM toplam 6 kez eğitildi
+2026-09-14 10:39:32,802 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-14 10:46:42,878 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-14 10:56:37,760 [INFO] tefas_ai: [BENCH] 498 satır
+2026-09-14 11:09:07,652 [INFO] tefas_ai: Cron OK (1344.8s)
+2026-09-14 11:12:35,255 [INFO] tefas_ai: [BT] 19 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-14 11:12:36,934 [INFO] tefas_ai: [HMM] Eğitildi: 61 örnek, seed=7, skor=-102.27, map={1: 2, 0: 1, 2: 0}
+2026-09-14 11:12:36,934 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-12-02
+2026-09-14 11:32:20,875 [WARNING] hmmlearn.base: Model is not converging.  Current: -110.48324600599949 is not greater than -110.48324560768425. Delta is -3.983152367936782e-07
+2026-09-14 11:32:20,965 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=7, skor=-110.48, map={1: 2, 0: 1, 2: 0}
+2026-09-14 11:32:20,965 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2026-01-12
+2026-09-14 11:38:21,398 [INFO] tefas_ai: [BT] 5/19 tamam
+2026-09-14 11:58:40,486 [WARNING] hmmlearn.base: Model is not converging.  Current: -163.2401061506025 is not greater than -163.2401057088742. Delta is -4.417282752910978e-07
+2026-09-14 11:58:40,546 [WARNING] hmmlearn.base: Model is not converging.  Current: -163.24010613428752 is not greater than -163.24010597021083. Delta is -1.6407668113060936e-07
+2026-09-14 11:58:40,594 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=123, skor=-163.24, map={2: 2, 0: 1, 1: 0}
+2026-09-14 11:58:40,595 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2026-02-19
+2026-09-14 12:14:15,361 [INFO] tefas_ai: [BT] 10/19 tamam
+2026-09-14 12:22:35,791 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=999, skor=-224.46, map={0: 2, 2: 1, 1: 0}
+2026-09-14 12:22:35,791 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2026-03-23
+2026-09-14 13:01:26,619 [INFO] tefas_ai: [BT] 15/19 tamam
+2026-09-14 13:01:26,835 [WARNING] hmmlearn.base: Model is not converging.  Current: -320.29378286089116 is not greater than -320.2935844742119. Delta is -0.0001983866792443223
+2026-09-14 13:01:26,938 [INFO] tefas_ai: [HMM] Eğitildi: 165 örnek, seed=2024, skor=-291.35, map={0: 2, 2: 1, 1: 0}
+2026-09-14 13:01:26,938 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2026-05-04
+2026-09-14 13:34:31,699 [INFO] tefas_ai: [HMM] Eğitildi: 186 örnek, seed=7, skor=-335.33, map={0: 2, 2: 1, 1: 0}
+2026-09-14 13:34:31,699 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2026-06-08
+2026-09-14 13:46:15,171 [INFO] tefas_ai: [BT] HMM toplam 6 kez eğitildi
+2026-09-14 14:46:18,828 [INFO] tefas_ai: [BT] 51 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-14 14:46:20,462 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-14 14:46:20,463 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08
+2026-09-14 14:51:51,654 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-14 14:51:51,655 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17
+2026-09-14 14:53:24,742 [INFO] tefas_ai: [BT] 5/51 tamam
+2026-09-14 14:58:31,299 [WARNING] hmmlearn.base: Model is not converging.  Current: -230.7320556064498 is not greater than -230.73189866614055. Delta is -0.00015694030923896207
+2026-09-14 14:58:31,299 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=2024, skor=-161.22, map={2: 2, 1: 1, 0: 0}
+2026-09-14 14:58:31,299 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2025-03-27
+2026-09-14 15:02:18,523 [INFO] tefas_ai: [BT] 10/51 tamam
+2026-09-14 15:04:22,481 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=123, skor=-170.76, map={1: 2, 2: 1, 0: 0}
+2026-09-14 15:04:22,481 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2025-04-30
+2026-09-14 15:11:00,110 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=7, skor=-202.34, map={0: 2, 1: 1, 2: 0}
+2026-09-14 15:11:00,111 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2025-06-02
+2026-09-14 15:13:23,374 [INFO] tefas_ai: [BT] 15/51 tamam
+2026-09-14 15:18:33,017 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=7, skor=-254.85, map={1: 2, 0: 1, 2: 0}
+2026-09-14 15:18:33,018 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2025-07-03
+2026-09-14 15:26:49,822 [INFO] tefas_ai: [BT] 20/51 tamam
+2026-09-14 15:26:50,104 [INFO] tefas_ai: [HMM] Eğitildi: 200 örnek, seed=999, skor=-313.70, map={1: 2, 0: 1, 2: 0}
+2026-09-14 15:26:50,104 [INFO] tefas_ai: [BT] HMM retrain #7 @ 2025-08-04
+2026-09-14 15:39:22,080 [INFO] tefas_ai: [HMM] Eğitildi: 228 örnek, seed=999, skor=-382.98, map={0: 2, 2: 1, 1: 0}
+2026-09-14 15:39:22,080 [INFO] tefas_ai: [BT] HMM retrain #8 @ 2025-09-11
+2026-09-14 15:42:47,938 [INFO] tefas_ai: [BT] 25/51 tamam
+2026-09-14 15:53:46,455 [INFO] tefas_ai: [HMM] Eğitildi: 256 örnek, seed=999, skor=-473.45, map={1: 2, 0: 1, 2: 0}
+2026-09-14 15:53:46,455 [INFO] tefas_ai: [BT] HMM retrain #9 @ 2025-10-21
+2026-09-14 16:01:35,820 [INFO] tefas_ai: [BT] 30/51 tamam
+2026-09-14 16:05:42,362 [INFO] tefas_ai: [HMM] Eğitildi: 277 örnek, seed=999, skor=-531.11, map={2: 2, 1: 1, 0: 0}
+2026-09-14 16:05:42,362 [INFO] tefas_ai: [BT] HMM retrain #10 @ 2025-11-20
+2026-09-14 16:23:07,947 [INFO] tefas_ai: [BT] 35/51 tamam
+2026-09-14 16:23:08,268 [INFO] tefas_ai: [HMM] Eğitildi: 304 örnek, seed=123, skor=-553.05, map={0: 2, 1: 1, 2: 0}
+2026-09-14 16:23:08,268 [INFO] tefas_ai: [BT] HMM retrain #11 @ 2025-12-30
+2026-09-14 16:37:26,111 [WARNING] hmmlearn.base: Model is not converging.  Current: -581.6416763039713 is not greater than -581.6416569511622. Delta is -1.9352809090378287e-05
+2026-09-14 16:37:26,198 [INFO] tefas_ai: [HMM] Eğitildi: 325 örnek, seed=123, skor=-581.64, map={1: 2, 2: 1, 0: 0}
+2026-09-14 16:37:26,198 [INFO] tefas_ai: [BT] HMM retrain #12 @ 2026-01-29
+2026-09-14 16:47:30,654 [INFO] tefas_ai: [BT] 40/51 tamam
+2026-09-14 16:57:57,836 [INFO] tefas_ai: [HMM] Eğitildi: 353 örnek, seed=7, skor=-648.89, map={1: 2, 0: 1, 2: 0}
+2026-09-14 16:57:57,836 [INFO] tefas_ai: [BT] HMM retrain #13 @ 2026-03-10
+2026-09-14 17:14:20,482 [INFO] tefas_ai: [BT] 45/51 tamam
+2026-09-14 17:14:20,866 [INFO] tefas_ai: [HMM] Eğitildi: 374 örnek, seed=123, skor=-688.01, map={1: 2, 2: 1, 0: 0}
+2026-09-14 17:14:20,866 [INFO] tefas_ai: [BT] HMM retrain #14 @ 2026-04-09
+2026-09-14 17:31:47,766 [INFO] tefas_ai: [HMM] Eğitildi: 395 örnek, seed=123, skor=-730.09, map={2: 2, 1: 1, 0: 0}
+2026-09-14 17:31:47,766 [INFO] tefas_ai: [BT] HMM retrain #15 @ 2026-05-12
+2026-09-14 17:44:07,249 [INFO] tefas_ai: [BT] 50/51 tamam
+2026-09-14 17:50:27,550 [INFO] tefas_ai: [BT] HMM toplam 15 kez eğitildi
+2026-09-14 17:51:01,320 [INFO] tefas_ai: [BT] 51 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-14 17:51:03,012 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-14 17:51:03,012 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08
+2026-09-14 17:56:19,127 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-14 17:56:19,128 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17
+2026-09-14 17:57:49,524 [INFO] tefas_ai: [BT] 5/51 tamam
+2026-09-14 18:02:44,665 [WARNING] hmmlearn.base: Model is not converging.  Current: -230.7320556064498 is not greater than -230.73189866614055. Delta is -0.00015694030923896207
+2026-09-14 18:02:44,665 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=2024, skor=-161.22, map={2: 2, 1: 1, 0: 0}
+2026-09-14 18:02:44,665 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2025-03-27
+2026-09-14 18:06:26,057 [INFO] tefas_ai: [BT] 10/51 tamam
+2026-09-14 18:08:24,042 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=123, skor=-170.76, map={1: 2, 2: 1, 0: 0}
+2026-09-14 18:08:24,042 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2025-04-30
+2026-09-14 18:14:47,727 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=7, skor=-202.34, map={0: 2, 1: 1, 2: 0}
+2026-09-14 18:14:47,727 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2025-06-02
+2026-09-14 18:17:05,283 [INFO] tefas_ai: [BT] 15/51 tamam
+2026-09-14 18:22:05,143 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=7, skor=-254.85, map={1: 2, 0: 1, 2: 0}
+2026-09-14 18:22:05,143 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2025-07-03
+2026-09-14 18:30:24,237 [INFO] tefas_ai: [BT] 20/51 tamam
+2026-09-14 18:30:24,510 [INFO] tefas_ai: [HMM] Eğitildi: 200 örnek, seed=999, skor=-313.70, map={1: 2, 0: 1, 2: 0}
+2026-09-14 18:30:24,510 [INFO] tefas_ai: [BT] HMM retrain #7 @ 2025-08-04
+2026-09-14 18:43:09,657 [INFO] tefas_ai: [HMM] Eğitildi: 228 örnek, seed=999, skor=-382.98, map={0: 2, 2: 1, 1: 0}
+2026-09-14 18:43:09,658 [INFO] tefas_ai: [BT] HMM retrain #8 @ 2025-09-11
+2026-09-14 18:46:34,362 [INFO] tefas_ai: [BT] 25/51 tamam
+2026-09-14 18:57:22,903 [INFO] tefas_ai: [HMM] Eğitildi: 256 örnek, seed=999, skor=-473.45, map={1: 2, 0: 1, 2: 0}
+2026-09-14 18:57:22,904 [INFO] tefas_ai: [BT] HMM retrain #9 @ 2025-10-21
+2026-09-14 19:04:59,781 [INFO] tefas_ai: [BT] 30/51 tamam
+2026-09-15 15:04:54,117 [INFO] tefas_ai: [HMM] Eğitildi: 277 örnek, seed=999, skor=-531.11, map={2: 2, 1: 1, 0: 0}
+2026-09-15 15:04:54,117 [INFO] tefas_ai: [BT] HMM retrain #10 @ 2025-11-20
+2026-09-15 15:22:34,324 [INFO] tefas_ai: [BT] 35/51 tamam
+2026-09-15 15:22:34,644 [INFO] tefas_ai: [HMM] Eğitildi: 304 örnek, seed=123, skor=-553.05, map={0: 2, 1: 1, 2: 0}
+2026-09-15 15:22:34,644 [INFO] tefas_ai: [BT] HMM retrain #11 @ 2025-12-30
+2026-09-15 15:36:41,657 [WARNING] hmmlearn.base: Model is not converging.  Current: -581.6416763039713 is not greater than -581.6416569511622. Delta is -1.9352809090378287e-05
+2026-09-15 15:36:41,746 [INFO] tefas_ai: [HMM] Eğitildi: 325 örnek, seed=123, skor=-581.64, map={1: 2, 2: 1, 0: 0}
+2026-09-15 15:36:41,746 [INFO] tefas_ai: [BT] HMM retrain #12 @ 2026-01-29
+2026-09-15 15:46:38,595 [INFO] tefas_ai: [BT] 40/51 tamam
+2026-09-15 15:57:06,914 [INFO] tefas_ai: [HMM] Eğitildi: 353 örnek, seed=7, skor=-648.89, map={1: 2, 0: 1, 2: 0}
+2026-09-15 15:57:06,914 [INFO] tefas_ai: [BT] HMM retrain #13 @ 2026-03-10
+2026-09-15 16:13:28,818 [INFO] tefas_ai: [BT] 45/51 tamam
+2026-09-15 16:13:29,214 [INFO] tefas_ai: [HMM] Eğitildi: 374 örnek, seed=123, skor=-688.01, map={1: 2, 2: 1, 0: 0}
+2026-09-15 16:13:29,214 [INFO] tefas_ai: [BT] HMM retrain #14 @ 2026-04-09
+2026-09-15 16:30:49,772 [INFO] tefas_ai: [HMM] Eğitildi: 395 örnek, seed=123, skor=-730.09, map={2: 2, 1: 1, 0: 0}
+2026-09-15 16:30:49,773 [INFO] tefas_ai: [BT] HMM retrain #15 @ 2026-05-12
+2026-09-15 16:42:56,179 [INFO] tefas_ai: [BT] 50/51 tamam
+2026-09-15 16:51:20,583 [INFO] tefas_ai: [BT] HMM toplam 15 kez eğitildi
+2026-09-15 16:51:57,868 [INFO] tefas_ai: [BT] 51 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-15 16:51:59,546 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-15 16:51:59,546 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08
+2026-09-15 16:57:12,041 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-15 16:57:12,041 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17
+2026-09-15 16:58:40,102 [INFO] tefas_ai: [BT] 5/51 tamam
+2026-09-15 17:03:42,544 [WARNING] hmmlearn.base: Model is not converging.  Current: -230.7320556064498 is not greater than -230.73189866614055. Delta is -0.00015694030923896207
+2026-09-15 17:03:42,545 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=2024, skor=-161.22, map={2: 2, 1: 1, 0: 0}
+2026-09-15 17:03:42,545 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2025-03-27
+2026-09-15 17:07:22,780 [INFO] tefas_ai: [BT] 10/51 tamam
+2026-09-15 17:09:20,175 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=123, skor=-170.76, map={1: 2, 2: 1, 0: 0}
+2026-09-15 17:09:20,175 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2025-04-30
+2026-09-15 17:15:40,783 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=7, skor=-202.34, map={0: 2, 1: 1, 2: 0}
+2026-09-15 17:15:40,783 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2025-06-02
+2026-09-15 17:17:57,790 [INFO] tefas_ai: [BT] 15/51 tamam
+2026-09-15 17:22:39,553 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=7, skor=-254.85, map={1: 2, 0: 1, 2: 0}
+2026-09-15 17:22:39,553 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2025-07-03
+2026-09-15 17:30:19,183 [INFO] tefas_ai: [BT] 20/51 tamam
+2026-09-15 17:30:19,442 [INFO] tefas_ai: [HMM] Eğitildi: 200 örnek, seed=999, skor=-313.70, map={1: 2, 0: 1, 2: 0}
+2026-09-15 17:30:19,442 [INFO] tefas_ai: [BT] HMM retrain #7 @ 2025-08-04
+2026-09-15 17:42:40,588 [INFO] tefas_ai: [HMM] Eğitildi: 228 örnek, seed=999, skor=-382.98, map={0: 2, 2: 1, 1: 0}
+2026-09-15 17:42:40,588 [INFO] tefas_ai: [BT] HMM retrain #8 @ 2025-09-11
+2026-09-15 17:46:01,954 [INFO] tefas_ai: [BT] 25/51 tamam
+2026-09-15 17:56:42,044 [INFO] tefas_ai: [HMM] Eğitildi: 256 örnek, seed=999, skor=-473.45, map={1: 2, 0: 1, 2: 0}
+2026-09-15 17:56:42,044 [INFO] tefas_ai: [BT] HMM retrain #9 @ 2025-10-21
+2026-09-15 18:04:20,772 [INFO] tefas_ai: [BT] 30/51 tamam
+2026-09-15 18:08:19,437 [INFO] tefas_ai: [HMM] Eğitildi: 277 örnek, seed=999, skor=-531.11, map={2: 2, 1: 1, 0: 0}
+2026-09-15 18:08:19,437 [INFO] tefas_ai: [BT] HMM retrain #10 @ 2025-11-20
+2026-09-15 18:25:56,578 [INFO] tefas_ai: [BT] 35/51 tamam
+2026-09-15 18:25:56,900 [INFO] tefas_ai: [HMM] Eğitildi: 304 örnek, seed=123, skor=-553.05, map={0: 2, 1: 1, 2: 0}
+2026-09-15 18:25:56,900 [INFO] tefas_ai: [BT] HMM retrain #11 @ 2025-12-30
+2026-09-15 18:40:35,705 [WARNING] hmmlearn.base: Model is not converging.  Current: -581.6416763039713 is not greater than -581.6416569511622. Delta is -1.9352809090378287e-05
+2026-09-15 18:40:35,797 [INFO] tefas_ai: [HMM] Eğitildi: 325 örnek, seed=123, skor=-581.64, map={1: 2, 2: 1, 0: 0}
+2026-09-15 18:40:35,797 [INFO] tefas_ai: [BT] HMM retrain #12 @ 2026-01-29
+2026-09-15 18:50:57,809 [INFO] tefas_ai: [BT] 40/51 tamam
+2026-09-15 19:01:30,105 [INFO] tefas_ai: [HMM] Eğitildi: 353 örnek, seed=7, skor=-648.89, map={1: 2, 0: 1, 2: 0}
+2026-09-15 19:01:30,105 [INFO] tefas_ai: [BT] HMM retrain #13 @ 2026-03-10
+2026-09-15 19:20:17,717 [INFO] tefas_ai: [BT] 45/51 tamam
+2026-09-15 19:20:18,119 [INFO] tefas_ai: [HMM] Eğitildi: 374 örnek, seed=123, skor=-688.01, map={1: 2, 2: 1, 0: 0}
+2026-09-15 19:20:18,119 [INFO] tefas_ai: [BT] HMM retrain #14 @ 2026-04-09
+2026-09-15 19:37:36,967 [INFO] tefas_ai: [HMM] Eğitildi: 395 örnek, seed=123, skor=-730.09, map={2: 2, 1: 1, 0: 0}
+2026-09-15 19:37:36,968 [INFO] tefas_ai: [BT] HMM retrain #15 @ 2026-05-12
+2026-09-16 11:19:44,284 [INFO] tefas_ai: [BT] 52 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-16 11:19:45,921 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-16 11:19:45,921 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08
+2026-09-16 11:25:15,283 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-16 11:25:15,284 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17
+2026-09-16 11:26:52,017 [INFO] tefas_ai: [BT] 5/52 tamam
+2026-09-16 11:29:35,046 [INFO] tefas_ai: [TEST] PASS: CorrelationFilter
+2026-09-16 11:29:35,046 [INFO] tefas_ai: [TEST] PASS: RegimeDetector labels
+2026-09-16 11:29:35,047 [INFO] tefas_ai: [TEST] PASS: DefensiveAllocator
+2026-09-16 11:29:35,047 [INFO] tefas_ai: [TEST] PASS: PortfolioTracker.compute_delta
+2026-09-16 11:29:35,047 [INFO] tefas_ai: [TEST] PASS: ProfessionalMetrics empty
+2026-09-16 11:29:35,048 [INFO] tefas_ai: [TEST] PASS: CashFlowAnalyzer empty
+2026-09-16 11:29:35,048 [INFO] tefas_ai: [TEST] PASS: Overlap fix
+2026-09-16 11:30:29,530 [INFO] tefas_ai: [BT] 52 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-16 11:30:31,164 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-16 11:30:31,168 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08 (diske kaydedildi)
+2026-09-16 11:35:52,817 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-16 11:35:52,818 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17 (diske kaydedildi)
+2026-09-16 11:37:25,849 [INFO] tefas_ai: [BT] 5/52 tamam
+2026-09-16 11:42:38,854 [WARNING] hmmlearn.base: Model is not converging.  Current: -230.7320556064498 is not greater than -230.73189866614055. Delta is -0.00015694030923896207
+2026-09-16 11:42:38,855 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=2024, skor=-161.22, map={2: 2, 1: 1, 0: 0}
+2026-09-16 11:42:38,860 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2025-03-27 (diske kaydedildi)
+2026-09-16 11:46:37,550 [INFO] tefas_ai: [BT] 10/52 tamam
+2026-09-16 11:48:42,642 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=123, skor=-170.76, map={1: 2, 2: 1, 0: 0}
+2026-09-16 11:48:42,643 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2025-04-30 (diske kaydedildi)
+2026-09-16 11:55:46,511 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=7, skor=-202.34, map={0: 2, 1: 1, 2: 0}
+2026-09-16 11:55:46,512 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2025-06-02 (diske kaydedildi)
+2026-09-16 11:58:11,878 [INFO] tefas_ai: [BT] 15/52 tamam
+2026-09-16 12:03:12,464 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=7, skor=-254.85, map={1: 2, 0: 1, 2: 0}
+2026-09-16 12:03:12,465 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2025-07-03 (diske kaydedildi)
+2026-09-16 12:11:49,539 [INFO] tefas_ai: [BT] 20/52 tamam
+2026-09-16 12:11:49,814 [INFO] tefas_ai: [HMM] Eğitildi: 200 örnek, seed=999, skor=-313.70, map={1: 2, 0: 1, 2: 0}
+2026-09-16 12:11:49,815 [INFO] tefas_ai: [BT] HMM retrain #7 @ 2025-08-04 (diske kaydedildi)
+2026-09-16 12:25:33,684 [INFO] tefas_ai: [HMM] Eğitildi: 228 örnek, seed=999, skor=-382.98, map={0: 2, 2: 1, 1: 0}
+2026-09-16 12:25:33,685 [INFO] tefas_ai: [BT] HMM retrain #8 @ 2025-09-11 (diske kaydedildi)
+2026-09-16 12:29:14,562 [INFO] tefas_ai: [BT] 25/52 tamam
+2026-09-16 12:41:01,120 [INFO] tefas_ai: [HMM] Eğitildi: 256 örnek, seed=999, skor=-473.45, map={1: 2, 0: 1, 2: 0}
+2026-09-16 12:41:01,121 [INFO] tefas_ai: [BT] HMM retrain #9 @ 2025-10-21 (diske kaydedildi)
+2026-09-16 12:48:59,994 [INFO] tefas_ai: [BT] 30/52 tamam
+2026-09-16 12:53:05,376 [INFO] tefas_ai: [HMM] Eğitildi: 277 örnek, seed=999, skor=-531.11, map={2: 2, 1: 1, 0: 0}
+2026-09-16 12:53:05,377 [INFO] tefas_ai: [BT] HMM retrain #10 @ 2025-11-20 (diske kaydedildi)
+2026-09-16 13:16:24,152 [INFO] tefas_ai: [BT] 35/52 tamam
+2026-09-16 13:16:24,749 [INFO] tefas_ai: [HMM] Eğitildi: 304 örnek, seed=123, skor=-553.05, map={0: 2, 1: 1, 2: 0}
+2026-09-16 13:16:24,750 [INFO] tefas_ai: [BT] HMM retrain #11 @ 2025-12-30 (diske kaydedildi)
+2026-09-16 13:31:01,996 [WARNING] hmmlearn.base: Model is not converging.  Current: -581.6416763039713 is not greater than -581.6416569511622. Delta is -1.9352809090378287e-05
+2026-09-16 13:31:02,076 [INFO] tefas_ai: [HMM] Eğitildi: 325 örnek, seed=123, skor=-581.64, map={1: 2, 2: 1, 0: 0}
+2026-09-16 13:31:02,077 [INFO] tefas_ai: [BT] HMM retrain #12 @ 2026-01-29 (diske kaydedildi)
+2026-09-16 13:41:20,788 [INFO] tefas_ai: [BT] 40/52 tamam
+2026-09-16 13:52:06,359 [INFO] tefas_ai: [HMM] Eğitildi: 353 örnek, seed=7, skor=-648.89, map={1: 2, 0: 1, 2: 0}
+2026-09-16 13:52:06,360 [INFO] tefas_ai: [BT] HMM retrain #13 @ 2026-03-10 (diske kaydedildi)
+2026-09-16 15:05:42,945 [INFO] tefas_ai: [BT] 45/52 tamam
+2026-09-16 15:05:43,356 [INFO] tefas_ai: [HMM] Eğitildi: 374 örnek, seed=123, skor=-688.01, map={1: 2, 2: 1, 0: 0}
+2026-09-16 15:05:43,357 [INFO] tefas_ai: [BT] HMM retrain #14 @ 2026-04-09 (diske kaydedildi)
+2026-09-16 15:23:44,172 [INFO] tefas_ai: [HMM] Eğitildi: 395 örnek, seed=123, skor=-730.09, map={2: 2, 1: 1, 0: 0}
+2026-09-16 15:23:44,173 [INFO] tefas_ai: [BT] HMM retrain #15 @ 2026-05-12 (diske kaydedildi)
+2026-09-16 15:36:16,034 [INFO] tefas_ai: [BT] 50/52 tamam
+2026-09-16 15:42:40,525 [INFO] tefas_ai: [HMM] Eğitildi: 416 örnek, seed=123, skor=-764.93, map={1: 2, 2: 1, 0: 0}
+2026-09-16 15:42:40,526 [INFO] tefas_ai: [BT] HMM retrain #16 @ 2026-06-16 (diske kaydedildi)
+2026-09-16 15:51:11,430 [INFO] tefas_ai: [BT] HMM toplam 16 kez eğitildi
+2026-09-16 15:55:46,361 [INFO] tefas_ai: [BT] 52 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-16 15:55:46,396 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-01-08
+2026-09-16 16:01:28,233 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-02-17
+2026-09-16 16:03:06,885 [INFO] tefas_ai: [BT] 5/52 tamam
+2026-09-16 16:08:15,494 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-03-27
+2026-09-16 16:12:06,998 [INFO] tefas_ai: [BT] 10/52 tamam
+2026-09-16 16:14:07,047 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-04-30
+2026-09-16 16:20:56,906 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-06-02
+2026-09-16 16:23:23,786 [INFO] tefas_ai: [BT] 15/52 tamam
+2026-09-16 16:28:39,586 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-07-03
+2026-09-16 16:36:57,735 [INFO] tefas_ai: [BT] 20/52 tamam
+2026-09-16 16:36:57,828 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-08-04
+2026-09-16 16:49:33,729 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-09-11
+2026-09-16 16:53:00,752 [INFO] tefas_ai: [BT] 25/52 tamam
+2026-09-16 17:03:56,032 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-10-21
+2026-09-16 17:12:01,369 [INFO] tefas_ai: [BT] 30/52 tamam
+2026-09-16 17:16:10,683 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-11-20
+2026-09-16 17:34:14,363 [INFO] tefas_ai: [BT] 35/52 tamam
+2026-09-16 17:34:14,510 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-12-30
+2026-09-16 17:48:42,385 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-01-29
+2026-09-16 17:58:57,585 [INFO] tefas_ai: [BT] 40/52 tamam
+2026-09-16 18:09:46,414 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-03-10
+2026-09-16 18:26:50,611 [INFO] tefas_ai: [BT] 45/52 tamam
+2026-09-16 18:26:50,790 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-04-09
+2026-09-16 18:44:26,647 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-05-12
+2026-09-16 18:56:48,562 [INFO] tefas_ai: [BT] 50/52 tamam
+2026-09-16 19:02:48,021 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-06-16
+2026-09-16 19:08:52,758 [INFO] tefas_ai: [BT] HMM toplam 0 kez eğitildi
+2026-09-17 11:28:32,995 [INFO] tefas_ai: [BT] 52 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-17 11:28:34,650 [INFO] tefas_ai: [HMM] Eğitildi: 60 örnek, seed=2024, skor=-114.24, map={2: 2, 0: 1, 1: 0}
+2026-09-17 11:28:34,651 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-09 (diske kaydedildi)
+2026-09-17 11:28:36,123 [WARNING] hmmlearn.base: Model is not converging.  Current: -157.8258736563416 is not greater than -157.82505339892. Delta is -0.0008202574215943059
+2026-09-17 11:28:36,153 [INFO] tefas_ai: [HMM] Eğitildi: 88 örnek, seed=2024, skor=-157.83, map={1: 2, 2: 1, 0: 0}
+2026-09-17 11:28:36,157 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-18 (diske kaydedildi)
+2026-09-17 11:28:36,542 [INFO] tefas_ai: [BT] 5/52 tamam
+2026-09-17 11:28:37,760 [INFO] tefas_ai: [HMM] Eğitildi: 116 örnek, seed=42, skor=-169.60, map={1: 2, 0: 1, 2: 0}
+2026-09-17 11:28:37,761 [INFO] tefas_ai: [BT] HMM retrain #3 @ 2025-03-28 (diske kaydedildi)
+2026-09-17 11:28:38,567 [INFO] tefas_ai: [BT] 10/52 tamam
+2026-09-17 11:28:39,047 [WARNING] hmmlearn.base: Model is not converging.  Current: -236.1527614271496 is not greater than -236.15276140464144. Delta is -2.2508174879476428e-08
+2026-09-17 11:28:39,126 [WARNING] hmmlearn.base: Model is not converging.  Current: -236.15276142486894 is not greater than -236.15276124108507. Delta is -1.8378386812401004e-07
+2026-09-17 11:28:39,126 [INFO] tefas_ai: [HMM] Eğitildi: 137 örnek, seed=999, skor=-236.15, map={0: 2, 1: 1, 2: 0}
+2026-09-17 11:28:39,127 [INFO] tefas_ai: [BT] HMM retrain #4 @ 2025-05-02 (diske kaydedildi)
+2026-09-17 11:28:40,635 [INFO] tefas_ai: [HMM] Eğitildi: 158 örnek, seed=123, skor=-201.48, map={2: 2, 1: 1, 0: 0}
+2026-09-17 11:28:40,636 [INFO] tefas_ai: [BT] HMM retrain #5 @ 2025-06-03 (diske kaydedildi)
+2026-09-17 11:28:41,299 [INFO] tefas_ai: [BT] 15/52 tamam
+2026-09-17 11:28:42,373 [INFO] tefas_ai: [HMM] Eğitildi: 179 örnek, seed=999, skor=-256.18, map={1: 2, 0: 1, 2: 0}
+2026-09-17 11:28:42,374 [INFO] tefas_ai: [BT] HMM retrain #6 @ 2025-07-04 (diske kaydedildi)
+2026-09-17 11:28:43,861 [INFO] tefas_ai: [BT] 20/52 tamam
+2026-09-17 11:28:43,929 [WARNING] hmmlearn.base: Model is not converging.  Current: -312.27944925322225 is not greater than -312.279436360497. Delta is -1.2892725237634295e-05
+2026-09-17 11:28:44,030 [INFO] tefas_ai: [HMM] Eğitildi: 200 örnek, seed=7, skor=-312.28, map={1: 2, 2: 1, 0: 0}
+2026-09-17 11:28:44,031 [INFO] tefas_ai: [BT] HMM retrain #7 @ 2025-08-05 (diske kaydedildi)
+2026-09-17 11:28:46,281 [INFO] tefas_ai: [HMM] Eğitildi: 228 örnek, seed=2024, skor=-383.28, map={1: 2, 0: 1, 2: 0}
+2026-09-17 11:28:46,282 [INFO] tefas_ai: [BT] HMM retrain #8 @ 2025-09-12 (diske kaydedildi)
+2026-09-17 11:28:46,804 [INFO] tefas_ai: [BT] 25/52 tamam
+2026-09-17 11:28:48,076 [INFO] tefas_ai: [HMM] Eğitildi: 249 örnek, seed=123, skor=-454.27, map={2: 2, 1: 1, 0: 0}
+2026-09-17 11:28:48,077 [INFO] tefas_ai: [BT] HMM retrain #9 @ 2025-10-13 (diske kaydedildi)
+2026-09-17 11:28:49,845 [INFO] tefas_ai: [BT] 30/52 tamam
+2026-09-17 11:28:49,917 [WARNING] hmmlearn.base: Model is not converging.  Current: -505.2367225265172 is not greater than -505.23671707340657. Delta is -5.453110645703418e-06
+2026-09-17 11:28:49,981 [WARNING] hmmlearn.base: Model is not converging.  Current: -538.0087500693262 is not greater than -538.0086070397525. Delta is -0.00014302957367817726
+2026-09-17 11:28:50,012 [INFO] tefas_ai: [HMM] Eğitildi: 270 örnek, seed=7, skor=-505.24, map={0: 2, 2: 1, 1: 0}
+2026-09-17 11:28:50,013 [INFO] tefas_ai: [BT] HMM retrain #10 @ 2025-11-12 (diske kaydedildi)
+2026-09-17 11:28:52,755 [INFO] tefas_ai: [HMM] Eğitildi: 298 örnek, seed=7, skor=-549.15, map={2: 2, 0: 1, 1: 0}
+2026-09-17 11:28:52,756 [INFO] tefas_ai: [BT] HMM retrain #11 @ 2025-12-22 (diske kaydedildi)
+2026-09-17 11:28:53,438 [INFO] tefas_ai: [BT] 35/52 tamam
+2026-09-17 11:28:55,086 [INFO] tefas_ai: [HMM] Eğitildi: 318 örnek, seed=2024, skor=-569.83, map={0: 2, 1: 1, 2: 0}
+2026-09-17 11:28:55,087 [INFO] tefas_ai: [BT] HMM retrain #12 @ 2026-01-21 (diske kaydedildi)
+2026-09-17 11:28:57,362 [INFO] tefas_ai: [BT] 40/52 tamam
+2026-09-17 11:28:58,357 [INFO] tefas_ai: [HMM] Eğitildi: 346 örnek, seed=123, skor=-624.17, map={1: 2, 2: 1, 0: 0}
+2026-09-17 11:28:58,358 [INFO] tefas_ai: [BT] HMM retrain #13 @ 2026-03-02 (diske kaydedildi)
+2026-09-17 11:29:00,887 [INFO] tefas_ai: [HMM] Eğitildi: 367 örnek, seed=123, skor=-677.75, map={2: 2, 1: 1, 0: 0}
+2026-09-17 11:29:00,888 [INFO] tefas_ai: [BT] HMM retrain #14 @ 2026-04-01 (diske kaydedildi)
+2026-09-17 11:29:01,695 [INFO] tefas_ai: [BT] 45/52 tamam
+2026-09-17 11:29:03,588 [INFO] tefas_ai: [HMM] Eğitildi: 388 örnek, seed=7, skor=-719.60, map={2: 2, 1: 1, 0: 0}
+2026-09-17 11:29:03,589 [INFO] tefas_ai: [BT] HMM retrain #15 @ 2026-05-04 (diske kaydedildi)
+2026-09-17 11:29:06,086 [INFO] tefas_ai: [BT] 50/52 tamam
+2026-09-17 11:29:06,282 [INFO] tefas_ai: [HMM] Eğitildi: 409 örnek, seed=7, skor=-753.42, map={1: 2, 2: 1, 0: 0}
+2026-09-17 11:29:06,283 [INFO] tefas_ai: [BT] HMM retrain #16 @ 2026-06-08 (diske kaydedildi)
+2026-09-17 11:29:07,914 [INFO] tefas_ai: [BT] HMM toplam 16 kez eğitildi
+2026-09-17 11:42:17,744 [INFO] tefas_ai: [BT] 52 sinyal tarihi işlenecek (her 7 iş günü)
+2026-09-17 11:42:17,754 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-01-09
+2026-09-17 11:43:01,548 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-02-18
+2026-09-17 11:43:13,002 [INFO] tefas_ai: [BT] 5/52 tamam
+2026-09-17 11:43:48,968 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-03-28
+2026-09-17 11:44:14,256 [INFO] tefas_ai: [BT] 10/52 tamam
+2026-09-17 11:44:27,206 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-05-02
+2026-09-17 11:45:07,949 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-06-03
+2026-09-17 11:45:21,924 [INFO] tefas_ai: [BT] 15/52 tamam
+2026-09-17 11:45:50,856 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-07-04
+2026-09-17 11:46:36,117 [INFO] tefas_ai: [BT] 20/52 tamam
+2026-09-17 11:46:36,138 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-08-05
+2026-09-17 11:47:40,205 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-09-12
+2026-09-17 11:47:56,490 [INFO] tefas_ai: [BT] 25/52 tamam
+2026-09-17 11:48:29,928 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-10-13
+2026-09-17 11:49:21,959 [INFO] tefas_ai: [BT] 30/52 tamam
+2026-09-17 11:49:21,986 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-11-12
+2026-09-17 11:50:38,155 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2025-12-22
+2026-09-17 11:50:57,697 [INFO] tefas_ai: [BT] 35/52 tamam
+2026-09-17 11:51:37,758 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-01-21
+2026-09-17 11:52:40,832 [INFO] tefas_ai: [BT] 40/52 tamam
+2026-09-17 11:53:02,268 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-03-02
+2026-09-17 11:54:07,936 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-04-01
+2026-09-17 11:54:30,241 [INFO] tefas_ai: [BT] 45/52 tamam
+2026-09-17 11:55:16,013 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-05-04
+2026-09-17 11:56:26,563 [INFO] tefas_ai: [BT] 50/52 tamam
+2026-09-17 11:56:26,601 [INFO] tefas_ai: [BT] HMM disk cache hit @ 2026-06-08
+2026-09-17 11:57:15,306 [INFO] tefas_ai: [BT] HMM toplam 0 kez eğitildi
+2026-09-17 15:59:43,491 [INFO] tefas_ai: [TEST] PASS: CorrelationFilter
+2026-09-17 15:59:43,492 [INFO] tefas_ai: [TEST] PASS: RegimeDetector labels
+2026-09-17 15:59:43,492 [INFO] tefas_ai: [TEST] PASS: DefensiveAllocator
+2026-09-17 15:59:43,492 [INFO] tefas_ai: [TEST] PASS: PortfolioTracker.compute_delta
+2026-09-17 15:59:43,493 [INFO] tefas_ai: [TEST] PASS: ProfessionalMetrics empty
+2026-09-17 15:59:43,494 [INFO] tefas_ai: [TEST] PASS: CashFlowAnalyzer empty
+2026-09-17 15:59:43,494 [INFO] tefas_ai: [TEST] PASS: Overlap fix
+2026-09-21 11:53:40,867 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-21 11:55:07,966 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-21 11:57:14,041 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-21 11:57:45,977 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-21 12:00:22,204 [INFO] tefas_ai: Cron OK (188.2s)
+2026-09-21 13:39:32,859 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-21 13:39:58,209 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-21 13:43:10,083 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-21 13:43:10,701 [WARNING] tefas_ai: [CRON] Paper trade hata (kod 1): Traceback (most recent call last):
+  File "C:\Users\PC\PycharmProjects\multi_asset_ai_portfolio\paper_trade.py", line 220, in <module>
+    print("\U0001f4ca Paper Trading v2\n")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1254.py", l
+2026-09-21 13:43:10,702 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-21 13:43:11,153 [WARNING] tefas_ai: [CRON] Paper trade hata (kod 1): Traceback (most recent call last):
+  File "C:\Users\PC\PycharmProjects\multi_asset_ai_portfolio\paper_trade.py", line 220, in <module>
+    print("\U0001f4ca Paper Trading v2\n")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1254.py", l
+2026-09-21 13:43:11,156 [INFO] tefas_ai: Cron OK (218.3s)
+2026-09-21 15:53:34,096 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-21 15:53:57,750 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-21 15:57:57,560 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-21 15:58:00,160 [INFO] tefas_ai: [CRON] Paper trade OK — Getiri: -1.04%
+2026-09-21 15:58:00,164 [INFO] tefas_ai: Cron OK (266.1s)
+2026-09-25 19:35:03,219 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-25 19:35:39,391 [INFO] tefas_ai: [BENCH] 275 satır
+2026-09-25 19:38:04,656 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-25 19:38:09,992 [INFO] tefas_ai: [CRON] Paper trade OK — Getiri: -7.89%
+2026-09-25 19:38:09,995 [INFO] tefas_ai: Cron OK (186.8s)
+2026-09-28 12:16:58,238 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:17:23,253 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:17:23,339 [ERROR] tefas_ai: Hata: name 'get_delisted_funds' is not defined
+2026-09-28 12:19:24,879 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:19:44,403 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:19:44,470 [ERROR] tefas_ai: Hata: name 'get_delisted_funds' is not defined
+2026-09-28 12:21:04,517 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:21:28,670 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:21:28,766 [ERROR] tefas_ai: Hata: name 'get_delisted_funds' is not defined
+2026-09-28 12:27:36,302 [INFO] tefas_ai: [TEST] PASS: CorrelationFilter
+2026-09-28 12:27:36,302 [INFO] tefas_ai: [TEST] PASS: RegimeDetector labels
+2026-09-28 12:27:36,303 [INFO] tefas_ai: [TEST] PASS: DefensiveAllocator
+2026-09-28 12:27:36,303 [INFO] tefas_ai: [TEST] PASS: PortfolioTracker.compute_delta
+2026-09-28 12:27:36,303 [INFO] tefas_ai: [TEST] PASS: ProfessionalMetrics empty
+2026-09-28 12:27:36,304 [INFO] tefas_ai: [TEST] PASS: CashFlowAnalyzer empty
+2026-09-28 12:27:36,304 [INFO] tefas_ai: [TEST] PASS: Overlap fix
+2026-09-28 12:27:56,565 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:28:13,873 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:28:13,946 [ERROR] tefas_ai: Hata: name 'get_delisted_funds' is not defined
+2026-09-28 12:30:08,169 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:30:25,378 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:30:25,450 [INFO] tefas_ai: [SignalEngine] 2 tasfiye fonu fiyat matrisinden çıkarıldı
+2026-09-28 12:32:58,788 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-28 12:33:00,976 [INFO] tefas_ai: [CRON] Paper trade OK — Getiri: +0.19%
+2026-09-28 12:33:00,982 [INFO] tefas_ai: Cron OK (172.8s)
+2026-09-28 12:34:12,317 [INFO] tefas_ai: Cron başladı — kind=YAT, rebalance=False
+2026-09-28 12:34:36,825 [INFO] tefas_ai: [BENCH] 274 satır
+2026-09-28 12:34:36,930 [INFO] tefas_ai: [SignalEngine] 131 tasfiye fonu fiyat matrisinden çıkarıldı
+2026-09-28 12:38:12,687 [INFO] tefas_ai: [CRON] Paper trade başlatılıyor...
+2026-09-28 12:38:15,815 [INFO] tefas_ai: [CRON] Paper trade OK — Getiri: +0.19%
+2026-09-28 12:38:15,820 [INFO] tefas_ai: Cron OK (243.5s)

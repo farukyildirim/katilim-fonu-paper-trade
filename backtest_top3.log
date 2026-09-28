@@ -1,0 +1,8 @@
+=== BACKTEST (YAT) ===
+2026-09-16 11:19:44,284 [INFO] tefas_ai: [BT] 52 sinyal tarihi iþlenecek (her 7 iþ günü)
+2026-09-16 11:19:45,921 [INFO] tefas_ai: [HMM] Eðitildi: 60 örnek, seed=123, skor=-114.57, map={2: 2, 0: 1, 1: 0}
+2026-09-16 11:19:45,921 [INFO] tefas_ai: [BT] HMM retrain #1 @ 2025-01-08
+2026-09-16 11:25:15,283 [INFO] tefas_ai: [HMM] Eðitildi: 88 örnek, seed=999, skor=-146.85, map={0: 2, 2: 1, 1: 0}
+2026-09-16 11:25:15,284 [INFO] tefas_ai: [BT] HMM retrain #2 @ 2025-02-17
+2026-09-16 11:26:52,017 [INFO] tefas_ai: [BT] 5/52 tamam
+^C
