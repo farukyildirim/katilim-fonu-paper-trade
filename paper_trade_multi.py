@@ -468,17 +468,32 @@ def login_screen():
                         st.error("❌ Şifreler uyuşmuyor")
                     else:
                         try:
-                            response = supabase.auth.sign_up({
-                                "email": new_email, "password": new_password
-                            })
-                            if response.user:
+                            import traceback
+                            with st.spinner("Kayıt olunuyor..."):
+                                response = supabase.auth.sign_up({
+                                    "email": new_email, "password": new_password
+                                })
+                            st.write("🔍 **Debug Response:**")
+                            st.write(f"- Type: `{type(response).__name__}`")
+                            st.write(f"- Has user: `{hasattr(response, 'user')}`")
+                            if hasattr(response, 'user'):
+                                st.write(f"- User: `{response.user}`")
+                            if hasattr(response, 'session'):
+                                st.write(f"- Session: `{response.session}`")
+
+                            if response and hasattr(response, 'user') and response.user:
                                 st.session_state.user = response.user
-                                st.session_state.supabase_session = response.session
+                                st.session_state.supabase_session = getattr(response, 'session', None)
                                 st.success("✅ Kayıt başarılı!")
                                 time.sleep(0.5)
                                 st.rerun()
+                            else:
+                                st.warning("⚠️ Response alındı ama user boş")
+
                         except Exception as e:
-                            st.error(f"❌ Kayıt hatası: {e}")
+                            st.error(f"❌ Kayıt hatası: {type(e).__name__}: {e}")
+                            with st.expander("🔍 Tam Hata (Traceback)"):
+                                st.code(traceback.format_exc())
 
 
 if "user" not in st.session_state or st.session_state.user is None:
