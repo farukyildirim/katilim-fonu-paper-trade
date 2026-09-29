@@ -8,4 +8,4 @@ fpdf2==2.8.1
 matplotlib==3.9.2
 openpyxl==3.1.5
 requests==2.32.3
-supabase==2.9.1
+supabase==2.7.4
